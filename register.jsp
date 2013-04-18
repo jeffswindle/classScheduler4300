@@ -54,10 +54,24 @@
 		<h3><strong>Pending Courses</strong></h3>
 </div>
 <div class="register">
-	<c:set var="count" value="0"/>
-	<c:forEach var="mapReq" items="${reqMap}">
-		<c:out value="${reqMap[count]}"/>
-	</c:forEach>
+	<table>
+		<tr>
+			<th>Class</th>
+			<th>Section</th>
+			<th>Days</th>
+			<th>Start</th>
+			<th>End</th>
+		</tr>
+		<c:forEach var="mapReq" items="${reqMap}">
+			<tr>	
+				<td><a href="register.jsp?pendingSelection="><c:out value="${mapReq.getCoursePrefix+mapReq.getCourseName}"/></a></td>
+				<td><c:out value="${mapReq.getCallNumber}"/></td>
+				<td><c:out value="${mapReq.getDays}"/></td>
+				<td><c:out value="${mapReq.getPeriodBegin}"/></td>
+				<td><c:out value="${mapReq.getPeriodEnd}"/></td>
+			</tr>
+		</c:forEach>
+	</table>
 </div>
 
 	
