@@ -70,6 +70,16 @@ html, body{
 	margin-right:auto;
 	margin-top:20px;
 }
+.register table {
+	width:90%;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:20px;
+}
+.register td {
+	border:1px solid white;
+	border-collapse:collapse;
+}
 .collegereq {
 	float:left;
 	margin-top:20px;

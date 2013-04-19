@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- Author: David Schiliro -->
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="style.css">
 <title>Oasis v2</title>
@@ -54,24 +53,31 @@
 		<h3><strong>Pending Courses</strong></h3>
 </div>
 <div class="register">
-	<table>
-		<tr>
-			<th>Class</th>
-			<th>Section</th>
-			<th>Days</th>
-			<th>Start</th>
-			<th>End</th>
-		</tr>
-		<c:forEach var="mapReq" items="${reqMap}">
-			<tr>	
-				<td><a href="register.jsp?pendingSelection="><c:out value="${mapReq.getCoursePrefix+mapReq.getCourseName}"/></a></td>
-				<td><c:out value="${mapReq.getCallNumber}"/></td>
-				<td><c:out value="${mapReq.getDays}"/></td>
-				<td><c:out value="${mapReq.getPeriodBegin}"/></td>
-				<td><c:out value="${mapReq.getPeriodEnd}"/></td>
-			</tr>
-		</c:forEach>
-	</table>
+	<c:choose>
+		<c:when test="${reqMapId!=null}">
+			<h2>Please make a category selection to your left</h2>
+		</c:when>
+		<c:when test="${reqMapId==null}">
+			<table>
+				<tr>
+					<th>Class</th>
+					<th>Section</th>
+					<th>Days</th>
+					<th>Start</th>
+					<th>End</th>
+				</tr>
+				<c:forEach var="mapReq" items="${reqMap}">
+					<tr>	
+						<td><a href="register.jsp?pendingSelection="><c:out value="${mapReq.getCoursePrefix+mapReq.getCourseName}"/></a></td>
+						<td><c:out value="${mapReq.getCallNumber}"/></td>
+						<td><c:out value="${mapReq.getDays}"/></td>
+						<td><c:out value="${mapReq.getPeriodBegin}"/></td>
+						<td><c:out value="${mapReq.getPeriodEnd}"/></td>
+					</tr>
+				</c:forEach>
+			</table>
+		</c:when>
+	</c:choose>
 </div>
 
 	
