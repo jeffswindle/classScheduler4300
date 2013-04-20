@@ -1,5 +1,7 @@
 package servlets;
 
+import helper.CourseDAO;
+
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -31,18 +33,19 @@ private static final long serialVersionUID = 1L;
 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 */
 protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-ServletContext ctx = this.getServletContext();
-HttpSession session = request.getSession();
-RequestDispatcher dispatcher = null;
-//Getting the id from the requirement category
-int reqMapID = request.getParameter("reqMapId");
-//Creating a helper object
-CourseDAO helper = new CourseDAO();
-//Setting the course requirment
-request.setAttribute("reqMap",helper.getCoursesForReq(reqMapID));
-//Forwarding back to the register page
-dispatcher = ctx.getRequestDispatcher("/register.jsp");
-dispatcher.forward(request, response);
+	ServletContext ctx = this.getServletContext();
+	HttpSession session = request.getSession();
+	RequestDispatcher dispatcher = null;
+	//Getting the id from the requirement category
+	int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
+
+	//Creating a helper object
+	CourseDAO helper = new CourseDAO();
+	//Setting the course requirement
+	request.setAttribute("reqMap",helper.getReqList(reqMapID));
+	//Forwarding back to the register page
+	dispatcher = ctx.getRequestDispatcher("/register.jsp");
+	dispatcher.forward(request, response);
 }
 
 /**
@@ -51,5 +54,5 @@ dispatcher.forward(request, response);
 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 // TODO Auto-generated method stub
 }
-
 }
+
