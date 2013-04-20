@@ -14,11 +14,17 @@ import java.util.ArrayList;
  */
 public class CourseDAO {
 
-       /**
+	/**
 	 * This PreparedStatement will query the database to find all of the classes
 	 * that satisfy a given requirement
 	 */
 	private PreparedStatement classesSatisfyReq;
+	
+	/**
+	 * This PreparedStatement will query the database to find all meetings of a
+	 * given course
+	 */
+	private PreparedStatement meetingsForCourse;
 	
 	/**
 	 * ArrayLists of classes that satisfy the appropriate requirement number
@@ -53,11 +59,17 @@ public class CourseDAO {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("Instantiated MySQL driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://172.17.152.60/classScheduler", 
-					"root", "Thisisit03214380");
+					"classSchedUser", "Thisisit03214380");
 			System.out.println("Connected to MySql");
-			classesSatisfyReq = conn.prepareStatement("SELECT reqCoursePrefix, reqCourseNumber FROM classScheduler.requirement "+
-					"WHERE reqMapId = ?");
-		
+			meetingsForCourse = conn.prepareStatement("select * from classScheduler.course course, classScheduler.courseRequirement creq, " +
+					"(Select req.reqId from classScheduler.requirement req where req.reqCourseNumber = ? AND req.reqCoursePrefix = ? AND " +
+					"req.reqMapId = ?) AS reqOut where reqOut.reqId = creq.reqId AND creq.courseId = course.courseUID");
+			
+			/*classesSatisfyReq = conn.prepareStatement("SELECT reqID FROM classScheduler.requirement WHERE reqMapID = ? AND " +
+																									"reqCoursePrefix = ? AND " +
+																									"reqCourseNumber = ? ");
+*/
+			classesSatisfyReq = conn.prepareStatement("SELECT * FROM classScheduler.requirement WHERE reqMapID = ?");
 			req1List = getCoursesForReq(1);
 			req2List = getCoursesForReq(2);
 			req3List = getCoursesForReq(3);
@@ -107,6 +119,49 @@ public class CourseDAO {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());
 		}
 		return list;
+	}
+	
+	/**
+	 * 
+	 * @param requirement requirement object
+	 * @return 
+	 */
+	public CourseListing getSections(requirement requirement){
+		CourseListing course = new CourseListing(requirement.getReqCoursePrefix(), requirement.getReqCourseNumber());
+		try{
+			meetingsForCourse.setInt(1, requirement.getReqTypeID());
+			meetingsForCourse.setString(2,requirement.getReqCoursePrefix());
+			meetingsForCourse.setString(3,requirement.getReqCourseNumber());
+			ResultSet rs = meetingsForCourse.executeQuery();
+			while(rs.next()){
+				String days = rs.getString("days");
+				String periodBegin = rs.getString("periodBegin");
+				String periodEnd = rs.getString("periodEnd");
+				int periodBegins = 1; //TODO
+				int periodEnds = 1; //TODO
+				ClassMeeting meeting = new ClassMeeting(days, periodBegins, periodEnds);
+				int callNumber = rs.getInt("callNumber");
+				ClassSection section = new ClassSection(callNumber);
+				section.addClassMeetingList(meeting);
+				String coursePrefix = rs.getString("coursePrefix");
+				String courseNumber = rs.getString("courseNumber");
+				String courseTitle = rs.getString("courseTitle");
+				course.setCourseTitle(courseTitle);
+				course.addClassSectionList(section);
+				if(!rs.isLast()){
+					if(rs.next() && rs.getInt("callNumber") == callNumber){
+						
+					}
+					else{
+						rs.previous();
+					}
+				}
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+		return course;
 	}
 	
 	/**
