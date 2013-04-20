@@ -7,6 +7,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="style.css">
 <title>Oasis v2</title>
+
+<!-- Author: David Schiliro -->
+
 <script>
 	var DAY_ARRAY = new Array("Mon","Tue","Wed","Thu","Fri");
 	var HOUR_ARRAY = new Array("8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
@@ -95,9 +98,21 @@
 <div class="headerline"></div>
 
 <div class="insidetab">
-	<canvas id="scheduleCanvas" width="800" height="700"></canvas>
+	<canvas id="scheduleCanvas" width="800" height="700">
 	<!-- c:forEach here for setting the variables for drawing the class meetings, then call drawClassMeeting() -->
+		<c:forEach var="pendingList" items="${pendingList}">
+			<script>
+				classObject.className='${pendingList.getName}';
+				alert(classObject.className);
+			</script>
+		</c:forEach>
+	</canvas>
 </div>
-
+<!-- "className":"",
+		"startTimeHour":"",
+		"startTimeMinute":"",
+		"duration":"",
+		"day":""
+		"${pendingList.getClassName}"; -->
 </body>
 </html>

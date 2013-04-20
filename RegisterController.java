@@ -38,11 +38,17 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	RequestDispatcher dispatcher = null;
 	//Getting the id from the requirement category
 	int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
-
+	System.out.println(reqMapID);
 	//Creating a helper object
 	CourseDAO helper = new CourseDAO();
 	//Setting the course requirement
 	request.setAttribute("reqMap",helper.getReqList(reqMapID));
+	request.setAttribute("reqMapId", request.getParameter("reqMapId"));
+	for(int i=0;i<helper.getReqList(reqMapID).size();i++){
+		System.out.println((helper.getReqList(reqMapID)).get(i).getReqMapId());
+		System.out.println((helper.getReqList(reqMapID)).get(i).getReqCoursePrefix());
+		System.out.println((helper.getReqList(reqMapID)).get(i).getReqCourseNumber());
+	}
 	//Forwarding back to the register page
 	dispatcher = ctx.getRequestDispatcher("/register.jsp");
 	dispatcher.forward(request, response);
