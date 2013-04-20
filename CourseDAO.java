@@ -194,4 +194,48 @@ public class CourseDAO {
 		}
 	}
 	
+	/**
+	 * Return an arraylist of strings representing the requirement names
+	 * @return return an arraylist of strings representing the requirement names
+	 * @author Jeffrey Swindle
+	 */
+	public ArrayList<String> getReqMapNames(){
+		//Variable Decs
+		ResultSet rSet = null;
+		String sqlStatement;
+		CallableStatement call = null;
+		ArrayList<String> reqNames = new ArrayList<String>();
+		
+		//Try to get a customer by id with purchases and error if unsuccessful
+		try{
+
+			//Build req name query
+			System.out.println("Build Query");
+			sqlStatement = "SELECT reqMapName FROM classScheduler.requirementMapping;";   
+			call = connect.prepareCall(sqlStatement);
+	      
+			//Execute req name query
+			System.out.println("Execute Query");
+			rSet = call.executeQuery();
+			
+			//Run through the result set and add each requirement mapping 
+			//name to the array list of requirement names
+			while(rSet.next()){
+				reqName.add(rSet.getString("reqMapName");
+			}
+
+			//Return the array list of requirement mapping names
+			return reqName;
+	      
+		}
+		catch( SQLException e ){
+			System.out.println("Error with SQL query");
+			e.printStackTrace();
+			System.exit(1);
+		}
+
+		return null;
+
+	}
+	
 }
