@@ -1,5 +1,7 @@
 package servlets;
 
+import helper.CourseDAO;
+
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -35,11 +37,12 @@ ServletContext ctx = this.getServletContext();
 HttpSession session = request.getSession();
 RequestDispatcher dispatcher = null;
 //Getting the id from the requirement category
-int reqMapID = request.getParameter("reqMapId");
+int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
+
 //Creating a helper object
 CourseDAO helper = new CourseDAO();
-//Setting the course requirment
-request.setAttribute("reqMap",helper.getCoursesForReq(reqMapID));
+//Setting the course requirement
+request.setAttribute("reqMap",helper.getReqList(reqMapID));
 //Forwarding back to the register page
 dispatcher = ctx.getRequestDispatcher("/register.jsp");
 dispatcher.forward(request, response);
@@ -51,5 +54,5 @@ dispatcher.forward(request, response);
 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 // TODO Auto-generated method stub
 }
-
 }
+
