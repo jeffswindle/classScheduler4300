@@ -59,7 +59,6 @@ public class ClassMeeting {
 	public int getDuration(){
 		int begin = convertTime(periodBegin);
 		int end = convertTime(periodEnd);
-		System.out.print("Begin:"+begin+"\tEnd:"+end+" ");
 		int minutes = end%100 - begin%100;
 		int hours = end/100 - begin/100;	
 		return hours*60 + minutes;
