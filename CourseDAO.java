@@ -62,14 +62,13 @@ public class CourseDAO {
 					"classSchedUser", "Thisisit03214380");
 			System.out.println("Connected to MySql");
 			meetingsForCourse = conn.prepareStatement("select * from classScheduler.course course, classScheduler.courseRequirement creq, " +
-					"(Select req.reqId from classScheduler.requirement req where req.reqCourseNumber = ? AND req.reqCoursePrefix = ? AND " +
-					"req.reqMapId = ?) AS reqOut where reqOut.reqId = creq.reqId AND creq.courseId = course.courseUID");
-			
-			/*classesSatisfyReq = conn.prepareStatement("SELECT reqID FROM classScheduler.requirement WHERE reqMapID = ? AND " +
-																									"reqCoursePrefix = ? AND " +
-																									"reqCourseNumber = ? ");
-*/
-			classesSatisfyReq = conn.prepareStatement("SELECT * FROM classScheduler.requirement WHERE reqMapID = ?");
+					"(Select req.reqId from classScheduler.requirement req where req.reqCourseNumber = ? AND req.reqCoursePrefix = ?) AS reqOut " +
+					"where reqOut.reqId = creq.reqId AND creq.courseId = course.courseUID ORDER BY course.callNumber");
+			classesSatisfyReq = conn.prepareStatement("SELECT course.coursePrefix, course.courseNumber, course.courseTitle FROM classScheduler.course " +
+					"course, classScheduler.courseRequirement creq, (SELECT req.reqId FROM classScheduler.requirement req WHERE req.reqMapId = ?) AS reqOut " +
+					"WHERE reqOut.reqId = creq.reqId AND creq.courseId = course.courseUID GROUP BY course.courseNumber ORDER BY course.coursePrefix, course.courseNumber");
+			getReqMapNames = conn.prepareStatement("SELECT reqMapName FROM classScheduler.requirementMapping");
+
 			req1List = getCoursesForReq(1);
 			req2List = getCoursesForReq(2);
 			req3List = getCoursesForReq(3);
@@ -122,46 +121,90 @@ public class CourseDAO {
 	}
 	
 	/**
-	 * 
+	 * This will return all of the sections and meetings for any course given as
+	 * a requirement object
 	 * @param requirement requirement object
-	 * @return 
+	 * @return CourseListing course listing object
 	 */
-	public CourseListing getSections(requirement requirement){
+	public CourseListing getSections(Requirement requirement){
 		CourseListing course = new CourseListing(requirement.getReqCoursePrefix(), requirement.getReqCourseNumber());
 		try{
-			meetingsForCourse.setInt(1, requirement.getReqTypeID());
+			meetingsForCourse.setString(1,requirement.getReqCourseNumber());
 			meetingsForCourse.setString(2,requirement.getReqCoursePrefix());
-			meetingsForCourse.setString(3,requirement.getReqCourseNumber());
 			ResultSet rs = meetingsForCourse.executeQuery();
+			ArrayList<ClassObj> classObjList = new ArrayList<ClassObj>();
+			String coursePrefix="", courseNumber="", courseTitle="";
 			while(rs.next()){
+				//packs the record into a ClassObj object and adds to arraylist
+				int callNumber = rs.getInt("callNumber");
+				coursePrefix = rs.getString("coursePrefix");
+				courseNumber = rs.getString("courseNumber");
+				courseTitle = rs.getString("courseTitle");
 				String days = rs.getString("days");
 				String periodBegin = rs.getString("periodBegin");
 				String periodEnd = rs.getString("periodEnd");
-				int periodBegins = 1; //TODO
-				int periodEnds = 1; //TODO
-				ClassMeeting meeting = new ClassMeeting(days, periodBegins, periodEnds);
-				int callNumber = rs.getInt("callNumber");
-				ClassSection section = new ClassSection(callNumber);
-				section.addClassMeetingList(meeting);
-				String coursePrefix = rs.getString("coursePrefix");
-				String courseNumber = rs.getString("courseNumber");
-				String courseTitle = rs.getString("courseTitle");
-				course.setCourseTitle(courseTitle);
-				course.addClassSectionList(section);
-				if(!rs.isLast()){
-					if(rs.next() && rs.getInt("callNumber") == callNumber){
-						
-					}
-					else{
-						rs.previous();
-					}
+				String bldg = rs.getString("bldg");
+				String room = rs.getString("room");
+				classObjList.add(new ClassObj(callNumber, coursePrefix, courseNumber, courseTitle,
+						days.trim(), periodBegin, periodEnd, bldg, room));
 				}
+			
+			CourseListing courseListing = new CourseListing(coursePrefix, courseNumber, courseTitle);
+			
+			for(int i=0; i < classObjList.size();){
+				ClassObj classes = classObjList.get(i);
+				ClassSection section = new ClassSection(classes.getCallNumber());
+						
+				int tempCallNumber = classes.getCallNumber();
+				int j = i;
+				while(tempCallNumber ==  classes.getCallNumber() && j < classObjList.size()){
+					//packages up a meeting(s) object and adds it to the list of meeting object in the ClassSection object
+					
+					//when there are multiple class meetings under a single line of a class section
+					if(classes.getDays().length() > 1){
+						String day = classes.getDays();
+						while(day.length() >= 1){
+							//packages up meeting objects and adds it to the list of meeting objects in the ClassSection object
+							//(for a single section that have multiple meeting days in it)
+							ClassMeeting meeting = new ClassMeeting(day.substring(0,1), classes.getPeriodBegin(), classes.getPeriodEnd(),
+									classes.getBldg(), classes.getRoom());
+							//adds meeting to section object
+							section.addClassMeetingList(meeting);
+							
+							//still more than 1 day left
+							if(day.length() > 1){
+								day = day.substring(2);
+							}
+							//only 1 day left so break
+							else break;
+						}
+					}
+					//only meets 1 day for this section
+					else{
+						ClassMeeting meeting = new ClassMeeting(classes.getDays(), classes.getPeriodBegin(), classes.getPeriodEnd(),
+								classes.getBldg(), classes.getRoom());
+						//adds meeting to section object
+						section.addClassMeetingList(meeting);
+					}
+					
+					i=++j;
+					//must check to make sure increment will not go out of bounds
+					if(j < classObjList.size())
+						classes = classObjList.get(j);
+				}
+				
+				//adds section to courseListing object
+				courseListing.addClassSectionList(section);
+				
 			}
+			
+			
+			return courseListing;
 		}
 		catch (SQLException e) {
 			System.out.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-		return course;
+		return null;
 	}
 	
 	/**
@@ -199,33 +242,30 @@ public class CourseDAO {
 	 * @return return an arraylist of strings representing the requirement names
 	 * @author Jeffrey Swindle
 	 */
+	/**
+	 * Return an arraylist of strings representing the requirement names
+	 * @return return an arraylist of strings representing the requirement names
+	 * @author Jeffrey Swindle
+	 */
 	public ArrayList<String> getReqMapNames(){
 		//Variable Decs
 		ResultSet rSet = null;
-		String sqlStatement;
-		CallableStatement call = null;
 		ArrayList<String> reqNames = new ArrayList<String>();
 		
 		//Try to get a customer by id with purchases and error if unsuccessful
 		try{
-
-			//Build req name query
-			System.out.println("Build Query");
-			sqlStatement = "SELECT reqMapName FROM classScheduler.requirementMapping;";   
-			call = connect.prepareCall(sqlStatement);
-	      
 			//Execute req name query
 			System.out.println("Execute Query");
-			rSet = call.executeQuery();
+			rSet = getReqMapNames.executeQuery();
 			
 			//Run through the result set and add each requirement mapping 
 			//name to the array list of requirement names
 			while(rSet.next()){
-				reqName.add(rSet.getString("reqMapName");
+				reqNames.add(rSet.getString("reqMapName"));
 			}
 
 			//Return the array list of requirement mapping names
-			return reqName;
+			return reqNames;
 	      
 		}
 		catch( SQLException e ){
