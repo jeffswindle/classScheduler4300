@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -8,6 +7,9 @@
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="style.css">
 <title>Oasis v2</title>
+
+<!-- Author: David Schiliro -->
+
 </head>
 <body>
 
@@ -19,7 +21,7 @@
 	<li><p>  |  </p></li>
 	<li><a href="register.jsp">Register</a></li>
 	<li><p>  |  </p></li>
-	<li><a href="schedule.jsp">Schedule</a></li>
+	<li><a href="schedule.jsp?schedule=true">Schedule</a></li>
 	<li><p>  |  </p></li>
 	<li><a href="help.jsp">Help</a></li>
 </ul>

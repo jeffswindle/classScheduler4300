@@ -1,3 +1,5 @@
+/* Author: David Schiliro */
+
 html, body{
 	background:#E3AE57;
 	height:100%;
@@ -65,7 +67,6 @@ html, body{
 	color:#F6F6F6;
 	text-align:center;
 	width:65%;
-	height:100%;
 	margin-left:auto;
 	margin-right:auto;
 	margin-top:20px;
@@ -75,10 +76,26 @@ html, body{
 	margin-left:auto;
 	margin-right:auto;
 	padding-top:20px;
+	border-collapse:collapse;
 }
 .register td {
 	border:1px solid white;
-	border-collapse:collapse;
+	
+}
+.register a:link {
+	text-decoration:none;
+	color:#DC3D24;
+	font-size:18px;
+	line-height:25px;
+}
+.register a:visited {}
+.register a:hover {
+	text-decoration:none;
+	color:#737373;
+}
+.register a:active {
+	text-decoration:none;
+	color:#737373;
 }
 .collegereq {
 	float:left;

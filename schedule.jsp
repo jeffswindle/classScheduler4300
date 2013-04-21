@@ -35,10 +35,12 @@
 		for (var i = 0; i<DAY_ABBR_ARRAY.length; i++){
 			if ((classObject.day).indexOf(DAY_ABBR_ARRAY[i])!=-1){
 				ctx.fillStyle="#418B41";
-				ctx.fillRect(101+(PIXELS_PER_DAY*i), 100 +(START_HOUR_ARRAY.indexOf(classObject.startTimeHour)*60) + parseInt(classObject.startTimeMinute), PIXELS_PER_DAY-2, classObject.duration);
+				ctx.fillRect(101+(PIXELS_PER_DAY*i), 100 +(START_HOUR_ARRAY.indexOf(classObject.startTimeHour)*60) + parseInt(classObject.startTimeMinute), 
+						PIXELS_PER_DAY-2, classObject.duration);
 				ctx.fillStyle="#F6F6F6";
 				ctx.font="20px Arial";
-				ctx.fillText(classObject.className, 125+(PIXELS_PER_DAY*i), 145 +(START_HOUR_ARRAY.indexOf(classObject.startTimeHour)*60) + parseInt(classObject.startTimeMinute));
+				ctx.fillText(classObject.className, 125+(PIXELS_PER_DAY*i), 
+						145 +(START_HOUR_ARRAY.indexOf(classObject.startTimeHour)*60) + parseInt(classObject.startTimeMinute));
 			}
 		}
 	}	
@@ -91,7 +93,7 @@
 	<li><p>  |  </p></li>
 	<li><a href="register.jsp">Register</a></li>
 	<li><p>  |  </p></li>
-	<li><a href="schedule.jsp">Schedule</a></li>
+	<li><a href="schedule.jsp?schedule=true">Schedule</a></li>
 	<li><p>  |  </p></li>
 	<li><a href="help.jsp">Help</a></li>
 </ul>
@@ -99,20 +101,23 @@
 
 <div class="insidetab">
 	<canvas id="scheduleCanvas" width="800" height="700">
-	<!-- c:forEach here for setting the variables for drawing the class meetings, then call drawClassMeeting() -->
-		<c:forEach var="pendingList" items="${pendingList}">
+		<c:forEach var="pendingList" items="${pendingList}"> <!-- Needs to get sent the pendingList session object from the controller -->
+			<c:set var="className" value="${pendingList.className}"/>
+			<c:set var="startTimeHour" value="3"/>
+			<c:set var="startTimeMinute" value="15"/>
+			<c:set var="duration" value="${pendingList.duration}"/>
+			<c:set var="day" value="${pendingList.day}"/>
 			<script>
-				classObject.className='${pendingList.getName}';
-				alert(classObject.className);
+				classObject.className='<c:out value="${className}"/>';
+				classObject.startTimeHour='<c:out value="${startTimeHour}"/>';
+				classObject.startTimeMinute='<c:out value="${startTimeMinute}"/>';
+				classObject.duration='<c:out value="${duration}"/>';
+				classObject.day='<c:out value="${day}"/>';
+				drawClassMeeting();
 			</script>
 		</c:forEach>
 	</canvas>
 </div>
-<!-- "className":"",
-		"startTimeHour":"",
-		"startTimeMinute":"",
-		"duration":"",
-		"day":""
-		"${pendingList.getClassName}"; -->
+
 </body>
 </html>
