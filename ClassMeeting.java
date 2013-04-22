@@ -56,6 +56,14 @@ public class ClassMeeting {
 		this.room = room;
 	}
 
+	public int getPeriodBeginHour(){
+		return convertTime(periodBegin)/100;
+	}
+	
+	public int getPeriodBeginMin(){
+		return convertTime(periodBegin)%100;
+	}
+
 	public int getDuration(){
 		int begin = convertTime(periodBegin);
 		int end = convertTime(periodEnd);
