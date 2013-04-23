@@ -3,7 +3,7 @@ package helper;
 /**
  * Class that represents a requirement
  */
-public class requirement {
+public class Requirement {
     
 	//Variable Decs
     private int reqMapId;
@@ -15,7 +15,7 @@ public class requirement {
 	*
 	*
 	*/
-	public requirement(String reqCoursePrefix, String reqCourseNumber) {
+	public Requirement(String reqCoursePrefix, String reqCourseNumber) {
 		this.reqCoursePrefix = reqCoursePrefix;
 		this.reqCourseNumber = reqCourseNumber;
 	}
@@ -24,7 +24,7 @@ public class requirement {
 	*
 	*
 	*/
-	public requirement(int reqTypeID, String reqCoursePrefix, String reqCourseNumber) {
+	public Requirement(int reqTypeID, String reqCoursePrefix, String reqCourseNumber) {
 		this.reqMapId = reqTypeID;
 		this.reqCoursePrefix = reqCoursePrefix;
 		this.reqCourseNumber = reqCourseNumber;
@@ -34,7 +34,7 @@ public class requirement {
 	*
 	*
 	*/
-	public requirement(int reqTypeID, String reqCoursePrefix, String reqCourseNumber, String reqCourseTitle) {
+	public Requirement(int reqTypeID, String reqCoursePrefix, String reqCourseNumber, String reqCourseTitle) {
 		this.reqMapId = reqTypeID;
 		this.reqCoursePrefix = reqCoursePrefix;
 		this.reqCourseNumber = reqCourseNumber;
