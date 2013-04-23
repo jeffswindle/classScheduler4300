@@ -47,9 +47,19 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	//Creating a helper object
 	CourseDAO helper = new CourseDAO();
 	
+	if(request.getParameter("reqMapID") != null){
+		//Getting the id from the requirement category
+		int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
+	
+		//Setting the course requirement
+		request.setAttribute("reqMap",helper.getReqList(reqMapID));
+	
+		//Forwarding back to the register page
+		dispatcher = ctx.getRequestDispatcher("/register.jsp");
+		dispatcher.forward(request, response);
+	}
 	//Checking to see if the user chooses a specific class
-	if(request.getParameter("reqMapID") != null && request.getParameter("reqCoursePrefix") != null
-			&& request.getParameter("reqCourseNumber") != null){
+	else if(request.getParameter("reqCoursePrefix") != null && request.getParameter("reqCourseNumber") != null){
 		//Creating a course listing object with the three request parameters.
 		CourseListing courseListing = new CourseListing(request.getParameter("reqMapID"),
 			request.getParameter("reqCoursePrefix"), request.getParameter("reqCoursePrefix"));
@@ -83,18 +93,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 			dispatcher.forward(request, response);
 		}
 	}
-	else if(request.getParameter("reqMapID") != null){
-		//Getting the id from the requirement category
-		int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
-	
-		//Setting the course requirement
-		request.setAttribute("reqMap",helper.getReqList(reqMapID));
-		request.setAttribute("reqMapId", request.getParameter("reqMapId"));
 
-		//Forwarding back to the register page
-		dispatcher = ctx.getRequestDispatcher("/register.jsp");
-		dispatcher.forward(request, response);
-	}
 }
 
 /**
