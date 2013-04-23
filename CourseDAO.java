@@ -275,30 +275,75 @@ public class CourseDAO {
 		}
 
 		return null;
-
 	}
 	
-	
-	public boolean courseConflict(ArrayList<PendingCourse> pendingCourses){
+	/**
+	 * This will determine if the arraylist of PendingCourse objects has any
+	 * conflicts in ClassMeetings
+	 * @param pendingCourses Arraylist of PendingCourse objects
+	 * @return true if there is a conflict and false if there is not 
+	 */
+	public boolean courseConflict(ArrayList<PendingCourse> pendingCourses, PendingCourse newCourse){
+		pendingCourses.add(newCourse);
 		if(pendingCourses.size() == 0)
-			return true;
-		
-		return true;
-	}
-	
-	private boolean meetingConflict(ArrayList<ClassMeeting> meetingList1, ArrayList<ClassMeeting> meetingList2){
-		for(int i = 0; i < meetingList1.size(); i++){
-			ClassMeeting meeting1 = meetingList1.
-			for(int j = 0; j < meetingList2.size(); j++){
-				if(meetingList1(i).g)
+			//no pending courses yet
+			return false;
+		for(int i = 0; i < pendingCourses.size(); i++){
+			//checks a PendingCourse object againts every other PendingCourse object in the ArrayList 
+			//for any conflicts
+			PendingCourse course1 = pendingCourses.get(i);
+			for(int j = 0; j < pendingCourses.size(); j++){
+				//compares two PendingCourse objects to see if they have conflicts
+				PendingCourse course2 = pendingCourses.get(j);
+				if(!meetingConflict(course1.getClassMeetingsList(), course2.getClassMeetingsList()))
+					return true; //there is a meeting conflict
 			}
 		}
-		
-		return true;
+		return false;
 	}
 	
-	public ArrayList<PendingCourse> addCourse(ArrayList<PendingCourse> pendingCourses){
-		
-		return null;
+	/**
+	 * This will compare two ArrayList of ClassMeeting objects and determine if they have 
+	 * any conflicts
+	 * @param meetingList1 ArrayList of ClassMeeting objects
+	 * @param meetingList2 ArrayList of ClassMeeting objects
+	 * @return true if there is a conflict and false if there is not
+	 */
+	protected boolean meetingConflict(ArrayList<ClassMeeting> meetingList1, ArrayList<ClassMeeting> meetingList2){
+		for(int i = 0; i < meetingList1.size(); i++){
+			//check conflicts with all meetings from meetingList2 against a meetingList1 ClassMeeting
+			ClassMeeting meeting1 = meetingList1.get(i);
+			for(int j = 0; j < meetingList2.size(); j++){
+				//checks conflict of meetingList2 ClassMeeting object with the meetingList1 ClassMeeting object
+				ClassMeeting meeting2 = meetingList2.get(j);
+					if(meeting1.getBeginInt() == meeting2.getBeginInt())
+						return true; //meets at the same time
+					else if(meeting1.getBeginInt() > meeting2.getBeginInt() && meeting2.getEndInt() > meeting1.getBeginInt() ||
+							meeting1.getBeginInt() < meeting2.getBeginInt() && meeting1.getEndInt() > meeting2.getBeginInt()){
+						//meeting1 starts AFTER meeting2 or meeting1 starts BEFORE meeting2 and the time overlap
+						return true;
+					}
+			}
+		}
+		return false;
 	}
+	
+	/**
+	 * Removes a PendingCourse object from the ArrayList of PendingCourses
+	 * @param pendingCourses ArrayList of PendingCourses
+	 * @param callNumber call number of the source to remove
+	 * @return ArrayList of PendingCourses with the desired class removed
+	 */
+	public ArrayList<PendingCourse> removePendingCourse(ArrayList<PendingCourse> pendingCourses, int callNumber){
+		for(int i = 0; i < pendingCourses.size(); i++){
+			//check to see if the PendingCourse object matches the given calNumber
+			if(pendingCourses.get(i).getCallNumber() == callNumber){
+				//if the PendingCourse has this call number, remove it
+				pendingCourses.remove(i);
+				break;
+			}
+		}
+		return pendingCourses; 
+	}
+	
 }
