@@ -72,6 +72,14 @@ public class ClassMeeting {
 		return hours*60 + minutes;
 	}
 	
+	public int getBeginInt(){
+		return convertTime(periodBegin);
+	}
+	
+	public int getEndInt(){
+		return convertTime(periodEnd);
+	}
+	
 	private int convertTime(String time){
 		if(time.charAt(4) == 'A'){
 			return Integer.parseInt(time.substring(0,4));
@@ -86,6 +94,7 @@ public class ClassMeeting {
 		else
 			return 0;
 	}
+	
 	
 	
 	@Override
