@@ -27,27 +27,33 @@ public class CourseDAO {
 	private PreparedStatement meetingsForCourse;
 	
 	/**
+	 * This PreparedStatement will query the database to find the requirement map 
+	 * names
+	 */
+	private PreparedStatement getReqMapNames;
+	
+	/**
 	 * ArrayLists of classes that satisfy the appropriate requirement number
 	 */
-	private ArrayList<requirement> req1List;
-	private ArrayList<requirement> req2List;
-	private ArrayList<requirement> req3List;
-	private ArrayList<requirement> req4List;
-	private ArrayList<requirement> req5List;
-	private ArrayList<requirement> req6List;
-	private ArrayList<requirement> req7List;
-	private ArrayList<requirement> req8List;
-	private ArrayList<requirement> req9List;
-	private ArrayList<requirement> req10List;
-	private ArrayList<requirement> req11List;
-	private ArrayList<requirement> req12List;
-	private ArrayList<requirement> req13List;
-	private ArrayList<requirement> req14List;
-	private ArrayList<requirement> req15List;
-	private ArrayList<requirement> req16List;
-	private ArrayList<requirement> req17List;
-	private ArrayList<requirement> req18List;
-	private ArrayList<requirement> req19List;
+	private ArrayList<Requirement> req1List;
+	private ArrayList<Requirement> req2List;
+	private ArrayList<Requirement> req3List;
+	private ArrayList<Requirement> req4List;
+	private ArrayList<Requirement> req5List;
+	private ArrayList<Requirement> req6List;
+	private ArrayList<Requirement> req7List;
+	private ArrayList<Requirement> req8List;
+	private ArrayList<Requirement> req9List;
+	private ArrayList<Requirement> req10List;
+	private ArrayList<Requirement> req11List;
+	private ArrayList<Requirement> req12List;
+	private ArrayList<Requirement> req13List;
+	private ArrayList<Requirement> req14List;
+	private ArrayList<Requirement> req15List;
+	private ArrayList<Requirement> req16List;
+	private ArrayList<Requirement> req17List;
+	private ArrayList<Requirement> req18List;
+	private ArrayList<Requirement> req19List;
 	
 	
 	/**
@@ -96,22 +102,23 @@ public class CourseDAO {
 	}
 	
 	/**
-	 * This will create an arraylist of courses that will statisfy
+	 * This will create an arraylist of courses that will satisfy
 	 * a given requirement
-	 * @param requirement requirement object
+	 * @param Requirement requirement object
 	 * @return arraylist of class objects
 	 */
-	private ArrayList<requirement> getCoursesForReq(int reqMapId){
-		ArrayList<requirement> list = new ArrayList<requirement>();
+	private ArrayList<Requirement> getCoursesForReq(int reqMapId){
+		ArrayList<Requirement> list = new ArrayList<Requirement>();
 		try{
 			classesSatisfyReq.setInt(1, reqMapId);
 			ResultSet rs = classesSatisfyReq.executeQuery();
 			while(rs.next()){
 				//creates and adds a requirement object to the list from
 				//the record
-				String reqCoursePrefix = rs.getString("reqCoursePrefix");
-				String reqCourseNumber = rs.getString("reqCourseNumber");
-				list.add(new requirement(reqMapId, reqCoursePrefix, reqCourseNumber));
+				String reqCoursePrefix = rs.getString("coursePrefix");
+				String reqCourseNumber = rs.getString("courseNumber");
+				String reqCourseTitle = rs.getString("courseTitle");
+				list.add(new Requirement(reqMapId, reqCoursePrefix, reqCourseNumber, reqCourseTitle));
 			}
 		}
 		catch (SQLException e) {
@@ -121,13 +128,12 @@ public class CourseDAO {
 	}
 	
 	/**
-	 * This will return all of the sections and meetings for any course given as
-	 * a requirement object
+	 * This will return all of the sections and meetings wrapped in a CourseListing object
+	 * for any course given as a requirement 
 	 * @param requirement requirement object
 	 * @return CourseListing course listing object
 	 */
 	public CourseListing getSections(Requirement requirement){
-		CourseListing course = new CourseListing(requirement.getReqCoursePrefix(), requirement.getReqCourseNumber());
 		try{
 			meetingsForCourse.setString(1,requirement.getReqCourseNumber());
 			meetingsForCourse.setString(2,requirement.getReqCoursePrefix());
@@ -152,6 +158,7 @@ public class CourseDAO {
 			CourseListing courseListing = new CourseListing(coursePrefix, courseNumber, courseTitle);
 			
 			for(int i=0; i < classObjList.size();){
+				//packages up each ClassObj into appropriate sections and meetings under the CourseListing object
 				ClassObj classes = classObjList.get(i);
 				ClassSection section = new ClassSection(classes.getCallNumber());
 						
@@ -194,10 +201,8 @@ public class CourseDAO {
 				}
 				
 				//adds section to courseListing object
-				courseListing.addClassSectionList(section);
-				
+				courseListing.addClassSectionList(section);	
 			}
-			
 			
 			return courseListing;
 		}
@@ -212,7 +217,7 @@ public class CourseDAO {
 	 * @param reqMapId requirement id
 	 * @return arraylist of classes satisfying the given requirement
 	 */
-	public ArrayList<requirement> getReqList(int reqMapId){
+	public ArrayList<Requirement> getReqList(int reqMapId){
 		switch(reqMapId){
 			case 1: return req1List;
 			case 2: return req2List;
@@ -237,11 +242,6 @@ public class CourseDAO {
 		}
 	}
 	
-	/**
-	 * Return an arraylist of strings representing the requirement names
-	 * @return return an arraylist of strings representing the requirement names
-	 * @author Jeffrey Swindle
-	 */
 	/**
 	 * Return an arraylist of strings representing the requirement names
 	 * @return return an arraylist of strings representing the requirement names
@@ -278,4 +278,27 @@ public class CourseDAO {
 
 	}
 	
+	
+	public boolean courseConflict(ArrayList<PendingCourse> pendingCourses){
+		if(pendingCourses.size() == 0)
+			return true;
+		
+		return true;
+	}
+	
+	private boolean meetingConflict(ArrayList<ClassMeeting> meetingList1, ArrayList<ClassMeeting> meetingList2){
+		for(int i = 0; i < meetingList1.size(); i++){
+			ClassMeeting meeting1 = meetingList1.
+			for(int j = 0; j < meetingList2.size(); j++){
+				if(meetingList1(i).g)
+			}
+		}
+		
+		return true;
+	}
+	
+	public ArrayList<PendingCourse> addCourse(ArrayList<PendingCourse> pendingCourses){
+		
+		return null;
+	}
 }
