@@ -103,8 +103,8 @@
 	<canvas id="scheduleCanvas" width="800" height="700">
 		<c:forEach var="pendingList" items="${pendingList}"> <!-- Needs to get sent the pendingList session object from the controller -->
 			<c:set var="className" value="${pendingList.className}"/>
-			<c:set var="startTimeHour" value="3"/>
-			<c:set var="startTimeMinute" value="15"/>
+			<c:set var="startTimeHour" value="${pendingList.beginHour}"/>
+			<c:set var="startTimeMinute" value="${pendingList.beginMin}"/>
 			<c:set var="duration" value="${pendingList.duration}"/>
 			<c:set var="day" value="${pendingList.day}"/>
 			<script>

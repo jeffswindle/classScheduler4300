@@ -54,13 +54,25 @@
 </div>
 <div class="pending">
 		<h3><strong>Pending Courses</strong></h3>
+			<table>
+				<c:forEach var="pendingList" items="${pendingArray}">
+					<tr>
+						<td>${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}</td>
+						<c:forEach var="pendingInfo" items="${pendingList.courseInfo}">
+							<td>${pendingInfo.day}</td>
+							<td>${pendingInfo.time}</td>
+						</c:forEach>
+					</tr>
+				</c:forEach>
+			</table>
 </div>
 <div class="register">
 	<c:choose>
 		<c:when test="${empty reqMapId}">
 			<h2>Please make a category selection to your left</h2>
 		</c:when>
-		<c:when test="${not empty reqMapId}">
+		<c:when test="${reqMapId>0}">
+		
 			<c:choose>
 				<c:when test="${not empty sections}"><!-- This won't happen until the controller sends back a section list object named "sections" -->
 					<h2>${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}</h2>
@@ -75,13 +87,15 @@
 						<tr>
 							<td><a href="RegisterController?className=${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}&classDay=${sectionList.classMeeting.day}&
 									startTime=${sectionList.classMeeting.periodBegin}&duration=${sectionList.classMeeting.duration}">${sectionList.callNumber}</a></td>
-							<td>${sectionList.classMeeting.day}</td>
-							<td>${sectionList.classMeeting.periodBegin}</td>
-							<td>${sectionList.classMeeting.periodEnd}</td>
+							<c:forEach var="courseMeetInfo" items="${sectionList.courseInfo}">
+								<td>${courseMeetInfo.day}</td>
+								<td>${courseMeetInfo.periodBegin}</td>
+								<td>${courseMeetInfo.periodEnd}</td>
+							</c:forEach>
 						</tr>
 					</c:forEach>
 				</c:when>
-				<c:when test="${empty reqCoursePrefix}">
+				<c:when test="${reqMapId>0}">
 					<c:set var="count" value="0"/>
 					<table>
 						<c:forEach var="mapReq" items="${reqMap}" step="3">
