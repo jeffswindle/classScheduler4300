@@ -44,10 +44,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	//Array list for pending courses
 	ArrayList<PendingCourse> pendingArray = new ArrayList<PendingCourse>();
 	
-	//Getting the id from the requirement category
-	int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
-	System.out.println(reqMapID);
-	
 	//Creating a helper object
 	CourseDAO helper = new CourseDAO();
 	
@@ -87,14 +83,18 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 			dispatcher.forward(request, response);
 		}
 	}
+	else if(request.getParameter("reqMapID") != null){
+		//Getting the id from the requirement category
+		int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
 	
-	//Setting the course requirement
-	request.setAttribute("reqMap",helper.getReqList(reqMapID));
-	request.setAttribute("reqMapId", request.getParameter("reqMapId"));
+		//Setting the course requirement
+		request.setAttribute("reqMap",helper.getReqList(reqMapID));
+		request.setAttribute("reqMapId", request.getParameter("reqMapId"));
 
-	//Forwarding back to the register page
-	dispatcher = ctx.getRequestDispatcher("/register.jsp");
-	dispatcher.forward(request, response);
+		//Forwarding back to the register page
+		dispatcher = ctx.getRequestDispatcher("/register.jsp");
+		dispatcher.forward(request, response);
+	}
 }
 
 /**
