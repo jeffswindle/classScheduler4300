@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class PendingCourse {
 
- //Declaration of Variables
+	//Declaration of Variables
 	private String coursePrefix;
 	private String courseNumber;
 	private String courseTitle;
@@ -15,16 +15,31 @@ public class PendingCourse {
 	 * 
 	 * @param coursePrefix
 	 * @param courseNumber
+	 * @param callNumber
+	 */
+	public PendingCourse(String coursePrefix, String courseNumber, int callNumber) {
+		this.coursePrefix = coursePrefix;
+		this.courseNumber = courseNumber;
+		this.callNumber = callNumber;
+		classMeetingsList = new ArrayList<ClassMeeting>();
+	}	
+
+	/**
+	 * 
+	 * @param coursePrefix
+	 * @param courseNumber
 	 * @param courseTitle
 	 * @param callNumber
 	 */
-	public PendingCourse(String coursePrefix, String courseNumber,
-			String courseTitle, int callNumber) {
+	public PendingCourse(String coursePrefix, String courseNumber, String courseTitle,
+			int callNumber) {
 		this.coursePrefix = coursePrefix;
 		this.courseNumber = courseNumber;
-		this.courseTitle = courseTitle;
 		this.callNumber = callNumber;
+		this.courseTitle = courseTitle;
+		classMeetingsList = new ArrayList<ClassMeeting>();
 	}	
+
 	
 	/**
 	 * 
