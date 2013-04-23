@@ -1,0 +1,45 @@
+<project name="csci4300_termproject" default="deploy">
+
+<target name="compile">
+	<javac srcdir="./src" destdir="./classes" includeAntRuntime="no">
+		<classpath>
+                        <pathelement location="/opt/tomcat/lib/commons-codec-1.7.jar"></pathelement>
+                        <pathelement location="/opt/tomcat/lib/servlet-api.jar"></pathelement>
+		</classpath>
+	</javac>
+	
+</target>
+
+<target name="test_compile" depends="compile">
+        <javac srcdir="./test_src" destdir="./test_classes" includeAntRuntime="no">
+		<classpath>
+			<pathelement location="./classes"></pathelement>
+			<pathelement location="/home/student/junit4.10/junit-4.10.jar"></pathelement>
+			<pathelement location="/opt/tomcat/lib"></pathelement>
+		</classpath>
+	</javac>
+
+</target>
+
+<target name="test" depends="test_compile">
+       <junit haltonfailure="on">
+		<test name="csci4300_termproject.ClassObjTest"/>
+		<formatter type="plain" usefile="false"></formatter>
+		<classpath>
+                        <pathelement location="./classes"></pathelement>
+                        <pathelement location="./test_classes"></pathelement>
+               		<pathelement location="/opt/tomcat/lib/mysql-connector-java-5.1.23-bin.jar"></pathelement>
+			<pathelement location="/opt/tomcat/lib/commons-codec-1.7.jar"></pathelement>
+		</classpath>
+	</junit>
+
+</target>
+
+<target name="deploy" depends="test">
+ 	<jar destfile="class_updater.jar"
+       	basedir="./classes"
+  	/>     
+</target>
+
+
+</project>

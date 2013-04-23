@@ -1,0 +1,43 @@
+CSCI 4300 Term Project
+Group 3:
+	Jason Beck
+	Chris Bolton
+	David Schiliro
+	Jeffrey Swindle
+
+Work Done:
+	Jason Beck
+		Database helper
+	Chris Bolton
+		Controller
+	David Schiliro
+		Web design and implementation
+	Jeffrey Swindle
+		Database design/class updater
+		
+Files Included:
+	Database Updater
+		Directory - All files related to the automatic database updater program.
+	Web Interface
+		Directory - All files related to the web interface.
+	Documents
+		Directory - All term project documents.
+			classSchedulerDBSchema.pdf
+				File - Database schema document.
+			WorkFlowDiagramController.docx
+				File -  Work flow diagram document.
+	Previous Submissions
+		Directory - All previous submission documents.
+	classSchedulerDBBackup.zip
+		File - Database snapshot with DDL to recreate database.
+	README
+		File - README
+		
+Program Summary:
+
+
+How to setup and run program:
+	A MySQL database backup is provided with a snapshot of data. This data can be used to generate a database with data or the DDL can be used to create the required database schema.
+	The following directories include READMEs for setup of their part of the application:
+		Database Updater
+		Web Interface

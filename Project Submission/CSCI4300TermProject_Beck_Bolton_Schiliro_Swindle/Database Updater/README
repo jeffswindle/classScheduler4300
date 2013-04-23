@@ -1,0 +1,25 @@
+CSCI 4300 Term Project
+Group 3:
+	Jason Beck
+	Chris Bolton
+	David Schiliro
+	Jeffrey Swindle
+
+Files Included:
+	DatabaseUpdater
+		Directory - Netbeans Project directory for database updater
+	dist
+		Directory - Contains executable jar for the hourly updater.
+	Documentation
+		Directory - Contains javadocs for the database updater
+	ANT Build
+		Directory - Contains directory structure and files needed to build with ANT.
+	README
+		File - README
+		
+Program Summary:
+	This program is used to populate the database with update course information. It first truncates the course and courseRequirement tables, second populates the course table with the file from the registrar, then populates the courseRequirement table based on information from the course and requirement tables.
+
+How to setup and run program:
+	The source must be compiled with regards to the live database being used. The connection string, user account, and password for the test database are all included in the source. You can use the DDL in the database backup in the base directory to create a new database.
+	Use ant on the ant directory.
