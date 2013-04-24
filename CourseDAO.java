@@ -282,22 +282,17 @@ public class CourseDAO {
 	 * conflicts in ClassMeetings
 	 * @param pendingCourses Arraylist of PendingCourse objects
 	 * @return true if there is a conflict and false if there is not 
+	 * @author Jason Beck
 	 */
 	public boolean courseConflict(ArrayList<PendingCourse> pendingCourses, PendingCourse newCourse){
-		pendingCourses.add(newCourse);
 		if(pendingCourses.size() == 0)
 			//no pending courses yet
 			return false;
-		for(int i = 0; i < pendingCourses.size(); i++){
-			//checks a PendingCourse object againts every other PendingCourse object in the ArrayList 
-			//for any conflicts
-			PendingCourse course1 = pendingCourses.get(i);
-			for(int j = 0; j < pendingCourses.size(); j++){
-				//compares two PendingCourse objects to see if they have conflicts
-				PendingCourse course2 = pendingCourses.get(j);
-				if(!meetingConflict(course1.getClassMeetingsList(), course2.getClassMeetingsList()))
-					return true; //there is a meeting conflict
-			}
+		for(int j = 0; j < pendingCourses.size(); j++){
+			//compares two PendingCourse objects to see if they have conflicts
+			PendingCourse course2 = pendingCourses.get(j);
+			if(meetingConflict(newCourse.getClassMeetingsList(), course2.getClassMeetingsList()))
+				return true; //there is a meeting conflict
 		}
 		return false;
 	}
@@ -308,6 +303,7 @@ public class CourseDAO {
 	 * @param meetingList1 ArrayList of ClassMeeting objects
 	 * @param meetingList2 ArrayList of ClassMeeting objects
 	 * @return true if there is a conflict and false if there is not
+	 * @author Jason Beck
 	 */
 	protected boolean meetingConflict(ArrayList<ClassMeeting> meetingList1, ArrayList<ClassMeeting> meetingList2){
 		for(int i = 0; i < meetingList1.size(); i++){
