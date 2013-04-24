@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * This class will create methods for the controller to access information
- * from the database
+ * from the database using depending java classes
  * @author Jason Beck
  */
 public class CourseDAO {
@@ -59,6 +59,7 @@ public class CourseDAO {
 	/**
 	 * A constructor for a CourseDAO object to connect to the database and prepare the
 	 * PreparedStatements
+	 * @author Jason Beck
 	 */
 	public CourseDAO() {
 		try{
@@ -106,6 +107,7 @@ public class CourseDAO {
 	 * a given requirement
 	 * @param Requirement requirement object
 	 * @return arraylist of class objects
+	 * @author Jason Beck
 	 */
 	private ArrayList<Requirement> getCoursesForReq(int reqMapId){
 		ArrayList<Requirement> list = new ArrayList<Requirement>();
@@ -132,6 +134,7 @@ public class CourseDAO {
 	 * for any course given as a requirement 
 	 * @param requirement requirement object
 	 * @return CourseListing course listing object
+	 * @author Jason Beck
 	 */
 	public CourseListing getSections(Requirement requirement){
 		try{
@@ -166,7 +169,7 @@ public class CourseDAO {
 				int j = i;
 				while(tempCallNumber ==  classes.getCallNumber() && j < classObjList.size()){
 					//packages up a meeting(s) object and adds it to the list of meeting object in the ClassSection object
-					
+										
 					//when there are multiple class meetings under a single line of a class section
 					if(classes.getDays().length() > 1){
 						String day = classes.getDays();
@@ -193,17 +196,14 @@ public class CourseDAO {
 						//adds meeting to section object
 						section.addClassMeetingList(meeting);
 					}
-					
 					i=++j;
 					//must check to make sure increment will not go out of bounds
 					if(j < classObjList.size())
 						classes = classObjList.get(j);
 				}
-				
 				//adds section to courseListing object
 				courseListing.addClassSectionList(section);	
 			}
-			
 			return courseListing;
 		}
 		catch (SQLException e) {
@@ -216,6 +216,7 @@ public class CourseDAO {
 	 * Get a list of classes that satisfy a requirement
 	 * @param reqMapId requirement id
 	 * @return arraylist of classes satisfying the given requirement
+	 * @author Jason Beck
 	 */
 	public ArrayList<Requirement> getReqList(int reqMapId){
 		switch(reqMapId){
@@ -329,6 +330,7 @@ public class CourseDAO {
 	 * @param pendingCourses ArrayList of PendingCourses
 	 * @param callNumber call number of the source to remove
 	 * @return ArrayList of PendingCourses with the desired class removed
+	 * @author Jason Beck
 	 */
 	public ArrayList<PendingCourse> removePendingCourse(ArrayList<PendingCourse> pendingCourses, int callNumber){
 		for(int i = 0; i < pendingCourses.size(); i++){
