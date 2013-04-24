@@ -99,6 +99,20 @@
 </ul>
 <div class="headerline"></div>
 
+<div class="pending">
+		<h3><strong>Pending Courses</strong></h3>
+			<table>
+				<c:forEach var="pendingList" items="${pendingArray}">
+					<tr>
+						<td>${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}</td>
+						<c:forEach var="pendingInfo" items="${pendingList.courseInfo}">
+							<td>${pendingInfo.day}</td>
+							<td>${pendingInfo.time}</td>
+						</c:forEach>
+					</tr>
+				</c:forEach>
+			</table>
+</div>
 <div class="insidetab">
 	<canvas id="scheduleCanvas" width="800" height="700">
 		<c:forEach var="pendingList" items="${pendingList}"> <!-- Needs to get sent the pendingList session object from the controller -->

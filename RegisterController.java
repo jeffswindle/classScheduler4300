@@ -4,6 +4,7 @@ import helper.ClassSection;
 import helper.CourseDAO;
 import helper.CourseListing;
 import helper.PendingCourse;
+import helper.Requirement;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,12 +48,12 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	//Creating a helper object
 	CourseDAO helper = new CourseDAO();
 	
-	if(request.getParameter("reqMapID") != null){
+	if(request.getParameter("reqMapId") != null){
 		//Getting the id from the requirement category
 		int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
-	
 		//Setting the course requirement
 		request.setAttribute("reqMap",helper.getReqList(reqMapID));
+		request.setAttribute("reqMapId", request.getParameter("reqMapId"));
 	
 		//Forwarding back to the register page
 		dispatcher = ctx.getRequestDispatcher("/register.jsp");
@@ -60,12 +61,12 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	}
 	//Checking to see if the user chooses a specific class
 	else if(request.getParameter("reqCoursePrefix") != null && request.getParameter("reqCourseNumber") != null){
+		System.out.println(request.getParameter("reqCoursePrefix") + request.getParameter("reqCourseNumber"));
 		//Creating a course listing object with the three request parameters.
-		CourseListing courseListing = new CourseListing(request.getParameter("reqMapID"),
-			request.getParameter("reqCoursePrefix"), request.getParameter("reqCoursePrefix"));
-		
+		CourseListing courseListing = helper.getSections(new Requirement(request.getParameter("reqCoursePrefix"), request.getParameter("reqCourseNumber")));
 		//Sending the CourseListing object back to the id courseListing
 		request.setAttribute("courseListing", courseListing);
+		request.setAttribute("reqMapId", request.getParameter("reqMapId"));
 		
 		dispatcher = ctx.getRequestDispatcher("/register.jsp");
 		dispatcher.forward(request, response);

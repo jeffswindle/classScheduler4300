@@ -13,6 +13,12 @@
 </head>
 <body>
 
+<c:if test="${error==1}">
+	<script>
+		alert("Fuck, you blew it up.");
+	</script>
+</c:if>
+
 <div class="header">
 	<h1>UGA Oasis 2.0</h1>
 </div>	
@@ -58,54 +64,68 @@
 				<c:forEach var="pendingList" items="${pendingArray}">
 					<tr>
 						<td>${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}</td>
-						<c:forEach var="pendingInfo" items="${pendingList.courseInfo}">
+					</tr>
+					<c:forEach var="pendingInfo" items="${pendingList.courseInfo}">\
+						<tr>
 							<td>${pendingInfo.day}</td>
 							<td>${pendingInfo.time}</td>
-						</c:forEach>
-					</tr>
+							<td>
+								<form name="gtfoClass" action="RegisterController?section=${courseMeetInfo.callNumber}" method="post">
+									<input type="submit" value="X">
+								</form>
+							</td>
+						</tr>
+					</c:forEach>
 				</c:forEach>
 			</table>
 </div>
 <div class="register">
 	<c:choose>
-		<c:when test="${empty reqMapId}">
+		<c:when test="${empty reqMapId && empty courseListing}">
 			<h2>Please make a category selection to your left</h2>
 		</c:when>
-		<c:when test="${reqMapId>0}">
-		
+		<c:when test="${not empty reqMapId || not empty courseListing}">
 			<c:choose>
-				<c:when test="${not empty sections}"><!-- This won't happen until the controller sends back a section list object named "sections" -->
-					<h2>${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}</h2>
+				<c:when test="${empty reqMapId && not empty courseListing}">
+					<h2>${courseListing.coursePrefix}${courseListing.courseNumber}</h2>
+					<table>
 					<tr>		
-						<th>Class</th>
 						<th>Section</th>
 						<th>Days</th>
 						<th>Start</th>
 						<th>End</th>
+						<th>Bldg</th>
+						<th>Room</th>
 					</tr>
-					<c:forEach var="sectionList" items="${sections}">
+					<c:forEach var="sectionList" items="${courseListing.classSectionList}">
 						<tr>
-							<td><a href="RegisterController?className=${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}&classDay=${sectionList.classMeeting.day}&
-									startTime=${sectionList.classMeeting.periodBegin}&duration=${sectionList.classMeeting.duration}">${sectionList.callNumber}</a></td>
-							<c:forEach var="courseMeetInfo" items="${sectionList.courseInfo}">
+							<td><a href="RegisterController?coursePrefix=${courseListing.coursePrefix}&courseNumber=${courseListing.courseNumber}
+							&callNumber=${sectionList.callNumber}">${sectionList.callNumber}</a></td>
+							<c:forEach var="courseMeetInfo" items="${sectionList.classMeetingsList}">
+								<tr>
+								<td></td>
 								<td>${courseMeetInfo.day}</td>
 								<td>${courseMeetInfo.periodBegin}</td>
 								<td>${courseMeetInfo.periodEnd}</td>
+								<td>${courseMeetInfo.bldg}</td>
+								<td>${courseMeetInfo.room}</td>
+								</tr>
 							</c:forEach>
 						</tr>
 					</c:forEach>
+					</table>
 				</c:when>
-				<c:when test="${reqMapId>0}">
+				<c:when test="${not empty reqMapId && empty courseListing}">
 					<c:set var="count" value="0"/>
 					<table>
 						<c:forEach var="mapReq" items="${reqMap}" step="3">
 							<tr>
-								<td><a href="RegisterController?reqMapId=${reqMapId}&reqCoursePrefix=${reqMap[count].reqCoursePrefix}&
-										reqCourseNumber=${reqMap[count].reqCourseNumber}">${reqMap[count].reqCoursePrefix}${reqMap[count].reqCourseNumber}</a></td>
-								<td><a href="RegisterController?reqMapId=${reqMapId}&reqCoursePrefix=${reqMap[count+1].reqCoursePrefix}&
-										reqCourseNumber=${reqMap[count+1].reqCourseNumber}">${reqMap[count+1].reqCoursePrefix}${reqMap[count+1].reqCourseNumber}</a></td>
-								<td><a href="RegisterController?reqMapId=${reqMapId}&reqCoursePrefix=${reqMap[count+2].reqCoursePrefix}&
-										reqCourseNumber=${reqMap[count+2].reqCourseNumber}">${reqMap[count+2].reqCoursePrefix}${reqMap[count+2].reqCourseNumber}</a></td>
+								<td><a href="RegisterController?reqCoursePrefix=${reqMap[count].reqCoursePrefix}&reqCourseNumber=${reqMap[count].reqCourseNumber}">
+									${reqMap[count].reqCoursePrefix}${reqMap[count].reqCourseNumber}</a></td>
+								<td><a href="RegisterController?reqCoursePrefix=${reqMap[count+1].reqCoursePrefix}&reqCourseNumber=${reqMap[count+1].reqCourseNumber}">
+									${reqMap[count+1].reqCoursePrefix}${reqMap[count+1].reqCourseNumber}</a></td>
+								<td><a href="RegisterController?reqCoursePrefix=${reqMap[count+2].reqCoursePrefix}&reqCourseNumber=${reqMap[count+2].reqCourseNumber}">
+									${reqMap[count+2].reqCoursePrefix}${reqMap[count+2].reqCourseNumber}</a></td>
 								<c:set var="count" value="${count+3}"/>
 							</tr>
 						</c:forEach>
