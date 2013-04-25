@@ -313,9 +313,10 @@ public class CourseDAO {
 			for(int j = 0; j < meetingList2.size(); j++){
 				//checks conflict of meetingList2 ClassMeeting object with the meetingList1 ClassMeeting object
 				ClassMeeting meeting2 = meetingList2.get(j);
-					if(meeting1.getBeginInt() == meeting2.getBeginInt())
+					if(meeting1.getBeginInt() == meeting2.getBeginInt() && meeting1.getDay().equals(meeting2.getDay()))
 						return true; //meets at the same time
-					else if(meeting1.getBeginInt() > meeting2.getBeginInt() && meeting2.getEndInt() > meeting1.getBeginInt() ||
+					else if(meeting1.getBeginInt() > meeting2.getBeginInt() && meeting2.getEndInt() > meeting1.getBeginInt() 
+							&& meeting1.getDay().equals(meeting2.getDay()) || meeting1.getDay().equals(meeting2.getDay()) &&
 							meeting1.getBeginInt() < meeting2.getBeginInt() && meeting1.getEndInt() > meeting2.getBeginInt()){
 						//meeting1 starts AFTER meeting2 or meeting1 starts BEFORE meeting2 and the time overlap
 						return true;
