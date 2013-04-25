@@ -326,7 +326,12 @@ public class CourseDAO {
 		return false;
 	}
 	
-		
+	/**
+	 * Gets all the meetings of a particular class section by call number
+	 * @param requirement requirement object
+	 * @param callNumber call number of the section
+	 * @return ArrayList of ClassMeeting objects
+	 */
 	public ArrayList<ClassMeeting> getMeetings(Requirement requirement, int callNumber){
 		CourseListing courseListing = getSections(requirement);
 		ArrayList<ClassSection> classSections = courseListing.getClassSectionList();
