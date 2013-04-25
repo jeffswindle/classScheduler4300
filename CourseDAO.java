@@ -325,6 +325,19 @@ public class CourseDAO {
 		return false;
 	}
 	
+		
+	public ArrayList<ClassMeeting> getMeetings(Requirement requirement, int callNumber){
+		CourseListing courseListing = getSections(requirement);
+		ArrayList<ClassSection> classSections = courseListing.getClassSectionList();
+		for(int i=0; i < classSections.size(); i++){
+			if(classSections.get(i).getCallNumber() == callNumber){
+				return classSections.get(i).getClassMeetingsList();
+			}
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Removes a PendingCourse object from the ArrayList of PendingCourses
 	 * @param pendingCourses ArrayList of PendingCourses
