@@ -12,6 +12,9 @@ public class ClassMeeting {
 	private String periodEnd;
 	private String bldg;
 	private String room;
+	private int periodBeginHour;
+	private int periodBeginMin;
+	private int duration;
 	
 	/**
 	 * Constructor to instantiate a ClassMeeting object
