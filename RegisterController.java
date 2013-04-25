@@ -109,6 +109,15 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 			dispatcher.forward(request, response);
 		}
 	}
+	else if(request.getParameter("section") != null){
+		//Then we need to delete an item from pending array list.
+		int section = Integer.parseInt(request.getParameter("section"));
+		pendingArray = helper.removePendingCourse(pendingArray, section);
+		
+		session.setAttribute("pendingArray", pendingArray);
+		dispatcher = ctx.getRequestDispatcher("/register.jsp");
+		dispatcher.forward(request, response);
+	}
 
 }
 
