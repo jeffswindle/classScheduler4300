@@ -292,7 +292,9 @@ public class CourseDAO {
 		for(int j = 0; j < pendingCourses.size(); j++){
 			//compares two PendingCourse objects to see if they have conflicts
 			PendingCourse course2 = pendingCourses.get(j);
-			if(meetingConflict(newCourse.getClassMeetingsList(), course2.getClassMeetingsList()))
+			if(meetingConflict(newCourse.getClassMeetingsList(), course2.getClassMeetingsList()) || 
+					(course2.getCourseNumber().equals(newCourse.getCourseNumber()) &&  
+							course2.getCoursePrefix().equals(newCourse.getCoursePrefix())))
 				return true; //there is a meeting conflict
 		}
 		return false;
