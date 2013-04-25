@@ -41,9 +41,18 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	ServletContext ctx = this.getServletContext();
 	HttpSession session = request.getSession();
 	RequestDispatcher dispatcher = null;
-	
+	ArrayList<PendingCourse> pendingArray = null;
 	//Array list for pending courses
-	ArrayList<PendingCourse> pendingArray = new ArrayList<PendingCourse>();
+	//System.out.println(((ArrayList<PendingCourse>)session.getAttribute("pendingArray")).size());
+	if (session.getAttribute("pendingArray")==null || ((ArrayList<PendingCourse>)session.getAttribute("pendingArray")).size()==0){
+		System.out.println("getting into the if statement");
+		pendingArray = new ArrayList<PendingCourse>();
+		session.setAttribute("pendingArray", pendingArray);
+		
+	}
+	else{
+		pendingArray = (ArrayList<PendingCourse>)session.getAttribute("pendingArray");
+	}
 	
 	//Creating a helper object
 	CourseDAO helper = new CourseDAO();
@@ -79,6 +88,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 		//Creating a pending course object with the request parameters.
 		PendingCourse pendingCourse = new PendingCourse(request.getParameter("coursePrefix"),
 				request.getParameter("courseNumber"), callNumber);
+		//System.out.println(pendingCourse);
+		//System.out.println(pendingArray.size());
 		
 		if(helper.courseConflict(pendingArray, pendingCourse)){
 			//Then we have a time conflict, so we must send an error message
@@ -90,6 +101,10 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 		else{
 			//There was no time conflict, so we may add the pending course
 			pendingArray.add(pendingCourse);
+			session.setAttribute("pendingArray", pendingArray);
+			System.out.println(pendingArray);
+			System.out.println(session.getAttribute("pendingArray"));
+			
 			dispatcher = ctx.getRequestDispatcher("/register.jsp");
 			dispatcher.forward(request, response);
 		}

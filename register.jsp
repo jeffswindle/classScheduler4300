@@ -28,8 +28,6 @@
 	<li><a href="register.jsp">Register</a></li>
 	<li><p>  |  </p></li>
 	<li><a href="schedule.jsp?schedule=true">Schedule</a></li>
-	<li><p>  |  </p></li>
-	<li><a href="help.jsp">Help</a></li>
 </ul>
 <div class="headerline"></div>
 
@@ -63,17 +61,18 @@
 			<table>
 				<c:forEach var="pendingList" items="${pendingArray}">
 					<tr>
-						<td>${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}</td>
-					</tr>
-					<c:forEach var="pendingInfo" items="${pendingList.courseInfo}">\
-						<tr>
-							<td>${pendingInfo.day}</td>
-							<td>${pendingInfo.time}</td>
-							<td>
-								<form name="gtfoClass" action="RegisterController?section=${courseMeetInfo.callNumber}" method="post">
+						<td>${pendingList.coursePrefix}${pendingList.courseNumber}</td>
+						<td>
+								<form name="gtfoClass" action="RegisterController?section=${pendingList.callNumber}" method="post">
 									<input type="submit" value="X">
 								</form>
 							</td>
+					</tr>
+					<c:forEach var="pendingInfo" items="${pendingList.classMeetingsList}">
+						<tr>
+							<td>${pendingInfo.day}</td>
+							<td>${pendingInfo.periodBegin}</td>
+							<td>${pendingInfo.periodEnd}</td>
 						</tr>
 					</c:forEach>
 				</c:forEach>

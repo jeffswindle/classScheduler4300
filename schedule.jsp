@@ -94,8 +94,6 @@
 	<li><a href="register.jsp">Register</a></li>
 	<li><p>  |  </p></li>
 	<li><a href="schedule.jsp?schedule=true">Schedule</a></li>
-	<li><p>  |  </p></li>
-	<li><a href="help.jsp">Help</a></li>
 </ul>
 <div class="headerline"></div>
 
@@ -104,21 +102,29 @@
 			<table>
 				<c:forEach var="pendingList" items="${pendingArray}">
 					<tr>
-						<td>${mapReq.reqCoursePrefix}${mapReq.reqCourseNumber}</td>
-						<c:forEach var="pendingInfo" items="${pendingList.courseInfo}">
-							<td>${pendingInfo.day}</td>
-							<td>${pendingInfo.time}</td>
-						</c:forEach>
+						<td>${pendingList.coursePrefix}${pendingList.courseNumber}</td>
+						<td>
+								<form name="gtfoClass" action="RegisterController?section=${pendingList.callNumber}" method="post">
+									<input type="submit" value="X">
+								</form>
+							</td>
 					</tr>
+					<c:forEach var="pendingInfo" items="${pendingList.classMeetingsList}">
+						<tr>
+							<td>${pendingInfo.day}</td>
+							<td>${pendingInfo.periodBegin}</td>
+							<td>${pendingInfo.periodEnd}</td>
+						</tr>
+					</c:forEach>
 				</c:forEach>
 			</table>
 </div>
 <div class="insidetab">
 	<canvas id="scheduleCanvas" width="800" height="700">
-		<c:forEach var="pendingList" items="${pendingList}"> <!-- Needs to get sent the pendingList session object from the controller -->
-			<c:set var="className" value="${pendingList.className}"/>
-			<c:set var="startTimeHour" value="${pendingList.beginHour}"/>
-			<c:set var="startTimeMinute" value="${pendingList.beginMin}"/>
+		<c:forEach var="pendingList" items="${pendingArray}"> <!-- Needs to get sent the pendingList session object from the controller -->
+			<c:set var="className" value="${pendingList.coursePrefix}${pendingList.courseNumber}"/>
+			<c:set var="startTimeHour" value="${pendingList.classMeetingsList.periodBegin}"/>
+			<c:set var="startTimeMinute" value="${pendingList.begi}"/>
 			<c:set var="duration" value="${pendingList.duration}"/>
 			<c:set var="day" value="${pendingList.day}"/>
 			<script>
