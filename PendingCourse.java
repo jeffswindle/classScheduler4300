@@ -2,6 +2,11 @@ package helper;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a PendingCourse object as a pending
+ * course on a users schedule
+ * @author Jason Beck
+ */
 public class PendingCourse {
 
 	//Declaration of Variables
@@ -12,10 +17,11 @@ public class PendingCourse {
 	private ArrayList<ClassMeeting> classMeetingsList;
 	
 	/**
-	 * 
-	 * @param coursePrefix
-	 * @param courseNumber
-	 * @param callNumber
+	 * This constructor will create a PendingCourse object and
+	 * instantiate all of the variables
+	 * @param coursePrefix course prefix
+	 * @param courseNumber course number
+	 * @param callNumber call number
 	 */
 	public PendingCourse(String coursePrefix, String courseNumber, int callNumber) {
 		this.coursePrefix = coursePrefix;
@@ -23,14 +29,16 @@ public class PendingCourse {
 		this.callNumber = callNumber;
 		CourseDAO course = new CourseDAO();
 		classMeetingsList = course.getMeetings(new Requirement(coursePrefix, courseNumber), callNumber);
+		
 	}	
 
 	/**
-	 * 
-	 * @param coursePrefix
-	 * @param courseNumber
-	 * @param courseTitle
-	 * @param callNumber
+	 * This constructor will create a PendingCourse object and
+	 * instantiate all of the variables
+	 * @param coursePrefix course prefix
+	 * @param courseNumber course number
+	 * @param courseTitle course title
+	 * @param callNumber call number
 	 */
 	public PendingCourse(String coursePrefix, String courseNumber, String courseTitle,
 			int callNumber) {
@@ -38,85 +46,86 @@ public class PendingCourse {
 		this.courseNumber = courseNumber;
 		this.callNumber = callNumber;
 		this.courseTitle = courseTitle;
-		classMeetingsList = new ArrayList<ClassMeeting>();
+		CourseDAO course = new CourseDAO();
+		classMeetingsList = course.getMeetings(new Requirement(coursePrefix, courseNumber), callNumber);
 	}	
 
 	
 	/**
-	 * 
-	 * @return
+	 * Gets the call number
+	 * @return call number
 	 */
 	public int getCallNumber() {
 		return callNumber;
 	}
 
 	/**
-	 * 
-	 * @param callNumber
+	 * Set the call number
+	 * @param callNumber call number
 	 */
 	public void setCallNumber(int callNumber) {
 		this.callNumber = callNumber;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Get the ArrayList of meetings
+	 * @return ArrayList of ClassMeetings
 	 */
 	public ArrayList<ClassMeeting> getClassMeetingsList() {
 		return classMeetingsList;
 	}
 	
 	/**
-	 * 
-	 * @param classMeeting
+	 * Add a meeting to the ArrayList of ClassMeetings
+	 * @param classMeeting ClassMeeting object
 	 */
 	public void addClassMeetingList(ClassMeeting classMeeting){
 		classMeetingsList.add(classMeeting);
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Gets the course prefix
+	 * @return course prefix
 	 */
 	public String getCoursePrefix() {
 		return coursePrefix;
 	}
 
 	/**
-	 * 
-	 * @param coursePrefix
+	 * Set the course prefix
+	 * @param coursePrefix course prefix
 	 */
 	public void setCoursePrefix(String coursePrefix) {
 		this.coursePrefix = coursePrefix;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Get the course number
+	 * @return course number
 	 */
 	public String getCourseNumber() {
 		return courseNumber;
 	}
 
 	/**
-	 * 
-	 * @param courseNumber
+	 * Set the course number
+	 * @param courseNumber course number
 	 */
 	public void setCourseNumber(String courseNumber) {
 		this.courseNumber = courseNumber;
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Get the course title
+	 * @return course title
 	 */
 	public String getCourseTitle() {
 		return courseTitle;
 	}
 
 	/**
-	 * 
-	 * @param courseTitle
+	 * Set the course title
+	 * @param courseTitle course title
 	 */
 	public void setCourseTitle(String courseTitle) {
 		this.courseTitle = courseTitle;
