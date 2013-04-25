@@ -45,7 +45,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	//Array list for pending courses
 	//System.out.println(((ArrayList<PendingCourse>)session.getAttribute("pendingArray")).size());
 	if (session.getAttribute("pendingArray")==null || ((ArrayList<PendingCourse>)session.getAttribute("pendingArray")).size()==0){
-		System.out.println("getting into the if statement");
 		pendingArray = new ArrayList<PendingCourse>();
 		session.setAttribute("pendingArray", pendingArray);
 		
@@ -70,7 +69,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	}
 	//Checking to see if the user chooses a specific class
 	else if(request.getParameter("reqCoursePrefix") != null && request.getParameter("reqCourseNumber") != null){
-		System.out.println(request.getParameter("reqCoursePrefix") + request.getParameter("reqCourseNumber"));
 		//Creating a course listing object with the three request parameters.
 		CourseListing courseListing = helper.getSections(new Requirement(request.getParameter("reqCoursePrefix"), request.getParameter("reqCourseNumber")));
 		//Sending the CourseListing object back to the id courseListing
@@ -88,8 +86,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 		//Creating a pending course object with the request parameters.
 		PendingCourse pendingCourse = new PendingCourse(request.getParameter("coursePrefix"),
 				request.getParameter("courseNumber"), callNumber);
-		//System.out.println(pendingCourse);
-		//System.out.println(pendingArray.size());
 		
 		if(helper.courseConflict(pendingArray, pendingCourse)){
 			//Then we have a time conflict, so we must send an error message
@@ -109,15 +105,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 			dispatcher.forward(request, response);
 		}
 	}
-	else if(request.getParameter("section") != null){
-		//Then we need to delete an item from pending array list.
-		int section = Integer.parseInt(request.getParameter("section"));
-		pendingArray = helper.removePendingCourse(pendingArray, section);
-		
-		session.setAttribute("pendingArray", pendingArray);
-		dispatcher = ctx.getRequestDispatcher("/register.jsp");
-		dispatcher.forward(request, response);
-	}
+	
 
 }
 
@@ -125,7 +113,22 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 */
 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-// TODO Auto-generated method stub
+	ServletContext ctx = this.getServletContext();
+	HttpSession session = request.getSession();
+	RequestDispatcher dispatcher = null;
+	ArrayList<PendingCourse> pendingArray = (ArrayList<PendingCourse>)session.getAttribute("pendingArray");
+	CourseDAO helper = new CourseDAO();
+	if(request.getParameter("section") != null){
+		//Then we need to delete an item from pending array list.
+		int section = Integer.parseInt(request.getParameter("section"));
+		System.out.println(request.getParameter("section"));
+		System.out.println(pendingArray.size());
+		pendingArray = helper.removePendingCourse(pendingArray, section);
+		System.out.println(pendingArray.size());
+		session.setAttribute("pendingArray", pendingArray);
+		dispatcher = ctx.getRequestDispatcher("/register.jsp");
+		dispatcher.forward(request, response);
+	}
 }
 }
 
