@@ -21,7 +21,8 @@ public class PendingCourse {
 		this.coursePrefix = coursePrefix;
 		this.courseNumber = courseNumber;
 		this.callNumber = callNumber;
-		classMeetingsList = new ArrayList<ClassMeeting>();
+		CourseDAO course = new CourseDAO();
+		classMeetingsList = course.getMeetings(new Requirement(coursePrefix, courseNumber), callNumber);
 	}	
 
 	/**
