@@ -6,6 +6,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="style.css">
+<link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
 <title>Oasis v2</title>
 
 <!-- Author: David Schiliro -->
@@ -26,12 +28,12 @@
 <div class="headerline"></div>
 	
 <div class="insidetab" style="margin-right:auto; margin-left:auto;">
-		<h2>Welcome to the University of Georgia's placeholder for Oasis 2.0</h2>
-		<p>This new webapp will combine a few different apps that exist already. The difference is now you will be able to find them in one place!</p>
-		<p>This is the Welcome/instructions page that students will first see when they get to the website.</p>
-		<p>To register, please click on the Register link above.</p>
-		<p>To see your schedule, please click on the Schedule link above</p>
-		<p>here is a change I should see on all computers</p>
+		<h2>Welcome to the Oasis v2.0, your new class registration tool!</h2>
+		<p>Please start your registration session by clicking on the "Registration" tab above</p>
+		<p>To see a visualization of your pending classes, please click on the Schedule" tab above</p>
+		<p>Notice as you add more classes they will fill the pending area on the left of the page</p>
+		<p>This webapp will not allow you to register for duplicate classes or those that conflict with current pending classes</p>
+		<p>Have Fun!</p>
 </div>
 
 </body>

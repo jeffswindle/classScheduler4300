@@ -1,20 +1,26 @@
 /* Author: David Schiliro */
 
 html, body{
-	background:#E3AE57;
+	background:url('background.png') repeat;
 	height:100%;
+	font-family: 'Vollkorn', serif;
 }
 .header{
 	text-align:center;
-	font-size:35px;
-	color:#FFFFFF;
-	margin-top:0;
-	padding-top:0;
-	padding-left:25px;
+	font-size:30px;
+	color:#98C5AB;
+	margin:0;
+	margin-bottom:15px;
+	padding:0;
+	padding-bottom:5px;	
 	width:50%;
 	height:20%;
 	float:left;
-	background:#232B2B;
+	background:#2F2F2F;
+	border-radius:24px;
+	text-shadow:10px 10px 10px #000000;
+	box-shadow:10px 10px 10px #000000;
+	font-family: 'Quicksand', sans-serif;
 }
 
 .headerline {
@@ -22,12 +28,14 @@ html, body{
 	width:100%;
 	height:10px;
 	clear:both;
+	
 }
 .tabs {
 	padding:0px;
 	text-align:center;
 	list-style:none;
-	line-height:35px;
+	line-height:30px;
+	font-family: 'Quicksand', sans-serif;
 }
 .tabs li {
 	margin:0;
@@ -36,7 +44,7 @@ html, body{
 	font-size:35px;
 }
 .tabs p{
-	color:#FFFFFF;
+	color:#2F2F2F;
 }
 .tabs a:link {
 	text-decoration:none;
@@ -58,15 +66,19 @@ html, body{
 	width:75%;
 	margin-right:auto;
 	margin-top:20px;
+	border-radius:24px;
+	padding-bottom:10px;
 }
 .register {
 	background:#232B2B;
 	color:#F6F6F6;
 	text-align:center;
 	width:65%;
+	padding-bottom:10px;
 	margin-left:auto;
 	margin-right:auto;
 	margin-top:20px;
+	border-radius:24px;
 }
 .register table {
 	width:90%;
@@ -102,6 +114,8 @@ html, body{
 	width:17%;
 	min-height:100%;
 	text-align:center;
+	border-radius:24px;
+	padding-bottom:10px;
 }
 .collegereq h4 {
 	text-decoration:underline;
@@ -131,6 +145,8 @@ html, body{
 	height:100%;
 	text-align:center;
 	padding-right:1px;
+	border-radius:24px;
+	padding-bottom:10px;
 }
 .pending h3 {
 	text-decoration:underline;

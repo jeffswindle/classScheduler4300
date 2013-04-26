@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="style.css">
+<link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
 <title>Oasis v2</title>
 
 <!-- Author: David Schiliro -->
@@ -58,8 +60,10 @@
 		<h3><strong>Pending Courses</strong></h3>
 			<table>
 				<c:forEach var="pendingList" items="${pendingArray}">
+					<!-- Prints out the class name inside a table -->
 					<tr>
 						<td>${pendingList.coursePrefix}${pendingList.courseNumber}</td>
+						<td></td>
 						<td>
 								<form name="gtfoClass" action="RegisterController" method="post">
 									<input name="section" type="hidden" value="${pendingList.callNumber}"/>
@@ -68,6 +72,7 @@
 							</td>
 					</tr>
 					<c:forEach var="pendingInfo" items="${pendingList.classMeetingsList}">
+						<!-- Prints out the class info inside a table -->
 						<tr>
 							<td>${pendingInfo.day}</td>
 							<td>${pendingInfo.periodBegin}</td>
@@ -96,11 +101,13 @@
 						<th>Room</th>
 					</tr>
 					<c:forEach var="sectionList" items="${courseListing.classSectionList}">
+						<!-- Prints out the class name inside a table -->
 						<tr>
 							<td><a href="RegisterController?coursePrefix=${courseListing.coursePrefix}&courseNumber=${courseListing.courseNumber}
 								&callNumber=${sectionList.callNumber}">${sectionList.callNumber}</a></td>
 							<td colSpan="5">${courseListing.courseTitle}</td>	
 							<c:forEach var="courseMeetInfo" items="${sectionList.classMeetingsList}">
+								<!-- Prints out the class info inside a table -->
 								<tr>
 								<td></td>
 								<td>${courseMeetInfo.day}</td>
@@ -119,6 +126,7 @@
 					<h2>${reqCatName}</h2>
 					<table>
 						<c:forEach var="mapReq" items="${reqMap}" step="3">
+							<!-- Prints out the class name as a link in a table -->
 							<tr>
 								<td><a href="RegisterController?reqCoursePrefix=${reqMap[count].reqCoursePrefix}&reqCourseNumber=${reqMap[count].reqCourseNumber}">
 									${reqMap[count].reqCoursePrefix}${reqMap[count].reqCourseNumber}</a></td>

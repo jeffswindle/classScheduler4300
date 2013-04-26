@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" type="text/css" href="style.css">
+<link href='http://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Vollkorn' rel='stylesheet' type='text/css'>
 <title>Oasis v2</title>
 
 <!-- Author: David Schiliro -->
@@ -29,14 +31,16 @@
 		var c = document.getElementById("scheduleCanvas");
 		var ctx = c.getContext("2d");
 		for (var j=0; j<CLASS_OBJ_ARRAY.length; j++){
+			//sets the jth class object to the var obj
 			var obj = CLASS_OBJ_ARRAY[j];
 			for (var i = 0; i<DAY_ABBR_ARRAY.length; i++){
+				//draws the class meeting of obj
 				if ((obj.day)==(DAY_ABBR_ARRAY[i])){
-					ctx.fillStyle="#418B41";
+					ctx.fillStyle="#80D4FF";
 					ctx.fillRect(101+(PIXELS_PER_DAY*i), 100 +(START_HOUR_ARRAY.indexOf(obj.startTimeHour)*60) + parseInt(obj.startTimeMinute), PIXELS_PER_DAY-2, obj.duration);
-					ctx.fillStyle="#F6F6F6";
-					ctx.font="20px Arial";
-					ctx.fillText(obj.className, 125+(PIXELS_PER_DAY*i), 145 +(START_HOUR_ARRAY.indexOf(obj.startTimeHour)*60) + parseInt(obj.startTimeMinute));
+					ctx.fillStyle="#2F2F2F";
+					ctx.font="19px Vollkorn";
+					ctx.fillText(obj.className, 125+(PIXELS_PER_DAY*i), 135 +(START_HOUR_ARRAY.indexOf(obj.startTimeHour)*60) + parseInt(obj.startTimeMinute));
 				}
 			}
 		}
@@ -46,20 +50,23 @@
 		var c = document.getElementById("scheduleCanvas");
 		var ctx = c.getContext("2d");
 		ctx.fillStyle="#F6F6F6";
-		ctx.font="25px Arial";
+		ctx.font="25px Vollkorn";
 		ctx.fillRect(100,100,700,800); 
 		
 		for (var i = 0; i<DAY_ARRAY.length; i++){
+			//draws a vertival line
 			ctx.moveTo(i*PIXELS_PER_DAY, 100);
 			ctx.fillText(DAY_ARRAY[i], (i*PIXELS_PER_DAY)+150, 85);
 			ctx.stroke();
 		}	
 		for (var i = 0; i<DAY_ARRAY.length+1; i++){
+			//draws a horizontal line
 			ctx.moveTo((i*PIXELS_PER_DAY)+100, 100);
 			ctx.lineTo((i*PIXELS_PER_DAY)+100, 700);
 			ctx.stroke();
 		}
 		for (var j = 0; j<HOUR_ARRAY.length; j++){
+			//draws the jth hour text
 			if(j==0 || j==1){
 				ctx.moveTo(100, j*PIXELS_PER_HOUR);
 				ctx.fillText(HOUR_ARRAY[j], 35,(j*PIXELS_PER_HOUR)+110);
@@ -73,6 +80,7 @@
 		}	
 		ctx.moveTo(100, 100);
 		for (var j = 0; j<HOUR_ARRAY.length; j++){
+			//draws the jth day text
 			ctx.moveTo(85, (j*PIXELS_PER_HOUR)+100);
 			ctx.lineTo(800, (j*PIXELS_PER_HOUR)+100);
 			ctx.stroke();
@@ -99,15 +107,19 @@
 		<h3><strong>Pending Courses</strong></h3>
 			<table>
 				<c:forEach var="pendingList" items="${pendingArray}">
+					<!-- Prints out the class name inside a table -->
 					<tr>
 						<td>${pendingList.coursePrefix}${pendingList.courseNumber}</td>
+						<td></td>
 						<td>
-								<form name="gtfoClass" action="RegisterController?section=${pendingList.callNumber}" method="post">
-									<input type="submit" value="X">
+								<form name="gtfoClass" action="RegisterController" method="post">
+									<input name="section" type="hidden" value="${pendingList.callNumber}"/>
+									<input type="submit" value="X"/>
 								</form>
 							</td>
 					</tr>
 					<c:forEach var="pendingInfo" items="${pendingList.classMeetingsList}">
+						<!-- Prints out the class info inside a table -->
 						<tr>
 							<td>${pendingInfo.day}</td>
 							<td>${pendingInfo.periodBegin}</td>
@@ -122,6 +134,7 @@
 		<c:forEach var="pendingList" items="${pendingArray}">
 		<c:set var="className" value="${pendingList.coursePrefix}${pendingList.courseNumber}"/>
 			<c:forEach var="classInfo" items="${pendingList.classMeetingsList}">
+				<!-- sets the variables for a class object into the javascript from the jstl -->
 				<c:set var="startTimeHour" value="${classInfo.periodBeginHour}"/>
 				<c:set var="startTimeMinute" value="${classInfo.periodBeginMin}"/>
 				<c:set var="duration" value="${classInfo.duration}"/>

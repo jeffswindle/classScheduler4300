@@ -42,16 +42,14 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	HttpSession session = request.getSession();
 	RequestDispatcher dispatcher = null;
 	ArrayList<PendingCourse> pendingArray = null;
-	
 	//Array list for pending courses
-	if (session.getAttribute("pendingArray") == null || ((ArrayList<PendingCourse>)session.getAttribute("pendingArray")).size() == 0){
-		//Then we have an empty pending course list
+	//System.out.println(((ArrayList<PendingCourse>)session.getAttribute("pendingArray")).size());
+	if (session.getAttribute("pendingArray")==null || ((ArrayList<PendingCourse>)session.getAttribute("pendingArray")).size()==0){
 		pendingArray = new ArrayList<PendingCourse>();
 		session.setAttribute("pendingArray", pendingArray);
 		
 	}
 	else{
-		//There exists one pending course in the list
 		pendingArray = (ArrayList<PendingCourse>)session.getAttribute("pendingArray");
 	}
 	
@@ -59,8 +57,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	CourseDAO helper = new CourseDAO();
 	
 	if(request.getParameter("reqMapId") != null){
-		//Then the user chose a requirement category item
-		
 		//Getting the id from the requirement category
 		int reqMapID = Integer.parseInt(request.getParameter("reqMapId"));
 		//Setting the course requirement
@@ -76,7 +72,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 	else if(request.getParameter("reqCoursePrefix") != null && request.getParameter("reqCourseNumber") != null){
 		//Creating a course listing object with the three request parameters.
 		CourseListing courseListing = helper.getSections(new Requirement(request.getParameter("reqCoursePrefix"), request.getParameter("reqCourseNumber")));
-		
 		//Sending the CourseListing object back to the id courseListing
 		request.setAttribute("courseListing", courseListing);
 		request.setAttribute("reqMapId", request.getParameter("reqMapId"));
@@ -104,6 +99,8 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 			//There was no time conflict, so we may add the pending course
 			pendingArray.add(pendingCourse);
 			session.setAttribute("pendingArray", pendingArray);
+			System.out.println(pendingArray);
+			System.out.println(session.getAttribute("pendingArray"));
 			
 			dispatcher = ctx.getRequestDispatcher("/register.jsp");
 			dispatcher.forward(request, response);
@@ -114,31 +111,22 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 }
 
 /**
- * @author Chris Bolton
 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 */
 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	ServletContext ctx = this.getServletContext();
 	HttpSession session = request.getSession();
 	RequestDispatcher dispatcher = null;
-	
-	//Creating an ArrayList to store a PendingCourse object
 	ArrayList<PendingCourse> pendingArray = (ArrayList<PendingCourse>)session.getAttribute("pendingArray");
-	
-	//Creating a helper object
 	CourseDAO helper = new CourseDAO();
-	
 	if(request.getParameter("section") != null){
 		//Then we need to delete an item from pending array list.
-		//Getting the id we need to delete
 		int section = Integer.parseInt(request.getParameter("section"));
-		
-		//Deleting the item through the database helper object
+		System.out.println(request.getParameter("section"));
+		System.out.println(pendingArray.size());
 		pendingArray = helper.removePendingCourse(pendingArray, section);
-		
-		//Sending back the pending array list
+		System.out.println(pendingArray.size());
 		session.setAttribute("pendingArray", pendingArray);
-		
 		dispatcher = ctx.getRequestDispatcher("/register.jsp");
 		dispatcher.forward(request, response);
 	}
