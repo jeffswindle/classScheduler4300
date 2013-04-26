@@ -66,6 +66,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 		//Setting the course requirement
 		request.setAttribute("reqMap",helper.getReqList(reqMapID));
 		request.setAttribute("reqMapId", request.getParameter("reqMapId"));
+		request.setAttribute("reqCatName", helper.getReqMapNames().get(reqMapID-1));
 	
 		//Forwarding back to the register page
 		dispatcher = ctx.getRequestDispatcher("/register.jsp");

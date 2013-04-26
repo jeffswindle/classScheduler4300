@@ -14,7 +14,8 @@
 	var DAY_ARRAY = new Array("Mon","Tue","Wed","Thu","Fri");
 	var HOUR_ARRAY = new Array("8:00","9:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00");
 	var DAY_ABBR_ARRAY = new Array("M", "T", "W", "R", "F");
-	var START_HOUR_ARRAY = new Array("8", "9", "10", "11", "12", "1", "2", "3", "4", "5");
+	var START_HOUR_ARRAY = new Array("8", "9", "10", "11", "12", "13", "14", "15", "16", "17");
+	var	CLASS_OBJ_ARRAY = new Array();
 	var TOP_MARGIN = 100;
 	var LEFT_MARGIN = 100;
 	var RIGHT_MARGIN = 100;
@@ -22,25 +23,21 @@
 	var PIXELS_PER_DAY = 700/5;
 	var PIXELS_PER_HOUR = 600/10;
 	
-	var classObject = {
-		"className":"",
-		"startTimeHour":"",
-		"startTimeMinute":"",
-		"duration":"",
-		"day":""
-		};
-   function drawClassMeeting(){
+	
+	
+	function drawClassMeeting(){
 		var c = document.getElementById("scheduleCanvas");
 		var ctx = c.getContext("2d");
-		for (var i = 0; i<DAY_ABBR_ARRAY.length; i++){
-			if ((classObject.day).indexOf(DAY_ABBR_ARRAY[i])!=-1){
-				ctx.fillStyle="#418B41";
-				ctx.fillRect(101+(PIXELS_PER_DAY*i), 100 +(START_HOUR_ARRAY.indexOf(classObject.startTimeHour)*60) + parseInt(classObject.startTimeMinute), 
-						PIXELS_PER_DAY-2, classObject.duration);
-				ctx.fillStyle="#F6F6F6";
-				ctx.font="20px Arial";
-				ctx.fillText(classObject.className, 125+(PIXELS_PER_DAY*i), 
-						145 +(START_HOUR_ARRAY.indexOf(classObject.startTimeHour)*60) + parseInt(classObject.startTimeMinute));
+		for (var j=0; j<CLASS_OBJ_ARRAY.length; j++){
+			var obj = CLASS_OBJ_ARRAY[j];
+			for (var i = 0; i<DAY_ABBR_ARRAY.length; i++){
+				if ((obj.day)==(DAY_ABBR_ARRAY[i])){
+					ctx.fillStyle="#418B41";
+					ctx.fillRect(101+(PIXELS_PER_DAY*i), 100 +(START_HOUR_ARRAY.indexOf(obj.startTimeHour)*60) + parseInt(obj.startTimeMinute), PIXELS_PER_DAY-2, obj.duration);
+					ctx.fillStyle="#F6F6F6";
+					ctx.font="20px Arial";
+					ctx.fillText(obj.className, 125+(PIXELS_PER_DAY*i), 145 +(START_HOUR_ARRAY.indexOf(obj.startTimeHour)*60) + parseInt(obj.startTimeMinute));
+				}
 			}
 		}
 	}	
@@ -85,8 +82,9 @@
 </head>
 <body onload="initializeCanvas();drawClassMeeting();">
 
+
 <div class="header">
-	<h1>UGA Oasis 2.0</h1>
+	<h1>UGA Oasis v2.0</h1>
 </div>	
 <ul class="tabs">
 	<li><a href="index.jsp">Home</a></li>
@@ -120,24 +118,31 @@
 			</table>
 </div>
 <div class="insidetab">
-	<canvas id="scheduleCanvas" width="800" height="700">
-		<c:forEach var="pendingList" items="${pendingArray}"> <!-- Needs to get sent the pendingList session object from the controller -->
-			<c:set var="className" value="${pendingList.coursePrefix}${pendingList.courseNumber}"/>
-			<c:set var="startTimeHour" value="${pendingList.classMeetingsList.periodBegin}"/>
-			<c:set var="startTimeMinute" value="${pendingList.begi}"/>
-			<c:set var="duration" value="${pendingList.duration}"/>
-			<c:set var="day" value="${pendingList.day}"/>
-			<script>
+		<canvas id="scheduleCanvas" width="800" height="700"></canvas>
+		<c:forEach var="pendingList" items="${pendingArray}">
+		<c:set var="className" value="${pendingList.coursePrefix}${pendingList.courseNumber}"/>
+			<c:forEach var="classInfo" items="${pendingList.classMeetingsList}">
+				<c:set var="startTimeHour" value="${classInfo.periodBeginHour}"/>
+				<c:set var="startTimeMinute" value="${classInfo.periodBeginMin}"/>
+				<c:set var="duration" value="${classInfo.duration}"/>
+				<c:set var="day" value="${classInfo.day}"/>
+				<script>
+				var classObject = {
+						className:"",
+						startTimeHour:"",
+						startTimeMinute:"",
+						duration:"",
+						day:""
+						};
 				classObject.className='<c:out value="${className}"/>';
 				classObject.startTimeHour='<c:out value="${startTimeHour}"/>';
 				classObject.startTimeMinute='<c:out value="${startTimeMinute}"/>';
 				classObject.duration='<c:out value="${duration}"/>';
 				classObject.day='<c:out value="${day}"/>';
-				drawClassMeeting();
-			</script>
+				CLASS_OBJ_ARRAY.push(classObject);
+				</script>
+			</c:forEach>
 		</c:forEach>
-	</canvas>
 </div>
-
 </body>
 </html>

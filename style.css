@@ -55,10 +55,7 @@ html, body{
 	background:#232B2B;
 	color:#F6F6F6;
 	text-align:center;
-	clear:both;
-	width:70%;
-	height:150%;
-	margin-left:auto;
+	width:75%;
 	margin-right:auto;
 	margin-top:20px;
 }
@@ -102,7 +99,7 @@ html, body{
 	margin-top:20px;
 	background:#232B2B;
 	color:#F6F6F6;
-	width:16%;
+	width:17%;
 	min-height:100%;
 	text-align:center;
 }
@@ -112,7 +109,7 @@ html, body{
 .collegereq a:link {
 	text-decoration:none;
 	color:#DC3D24;
-	font-size:18px;
+	font-size:15px;
 	line-height:25px;
 }
 .collegereq a:visited {}
@@ -130,20 +127,12 @@ html, body{
 	margin-top:20px;
 	background:#232B2B;
 	color:#F6F6F6;
-	width:16%;
+	width:17%;
 	height:100%;
 	text-align:center;
+	padding-right:1px;
 }
 .pending h3 {
 	text-decoration:underline;
 }
-.schedule {
-	background:#232B2B;
-	color:#F6F6F6;
-	text-align:center;
-	clear:both;
-	width:70%;
-	height:100%;
-	
-	margin-top:20px;
-}
+

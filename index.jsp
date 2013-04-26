@@ -14,7 +14,7 @@
 <body>
 
 <div class="header">
-	<h1>UGA Oasis 2.0</h1>
+	<h1>UGA Oasis v2.0</h1>
 </div>	
 <ul class="tabs">
 	<li><a href="index.jsp">Home</a></li>
@@ -22,12 +22,10 @@
 	<li><a href="register.jsp">Register</a></li>
 	<li><p>  |  </p></li>
 	<li><a href="schedule.jsp?schedule=true">Schedule</a></li>
-	<li><p>  |  </p></li>
-	<li><a href="help.jsp">Help</a></li>
 </ul>
 <div class="headerline"></div>
 	
-<div class="insidetab">
+<div class="insidetab" style="margin-right:auto; margin-left:auto;">
 		<h2>Welcome to the University of Georgia's placeholder for Oasis 2.0</h2>
 		<p>This new webapp will combine a few different apps that exist already. The difference is now you will be able to find them in one place!</p>
 		<p>This is the Welcome/instructions page that students will first see when they get to the website.</p>

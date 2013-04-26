@@ -15,12 +15,12 @@
 
 <c:if test="${error==1}">
 	<script>
-		alert("Fuck, you blew it up.");
+		alert("Duplicate class or time conflict detected (Skynet is watching)");
 	</script>
 </c:if>
 
 <div class="header">
-	<h1>UGA Oasis 2.0</h1>
+	<h1>UGA Oasis v2.0</h1>
 </div>	
 <ul class="tabs">
 	<li><a href="index.jsp">Home</a></li>
@@ -32,7 +32,7 @@
 <div class="headerline"></div>
 
 <div class="collegereq">
-	<h4><strong>UGA Requirements</strong></h4>
+	<h4>Requirement Categories</h4>
 	<a href="RegisterController?reqMapId=1">Cultural Diversity</a><br>
 	<a href="RegisterController?reqMapId=2">Environmental Literacy</a><br>
 	<a href="RegisterController?reqMapId=3">Core Curriculum I: Foundation Courses</a><br>
@@ -42,7 +42,6 @@
 	<a href="RegisterController?reqMapId=7">Core Curriculum IV: World Languages and Culture</a><br>
 	<a href="RegisterController?reqMapId=8">Core Curriculum IV: Humanities and Arts</a><br>
 	<a href="RegisterController?reqMapId=9">Core Curriculum V: Social Sciences</a><br>
-	<h4>Franklin College Requirements</h4>
 	<a href="RegisterController?reqMapId=10">Foreign Language</a><br>
 	<a href="RegisterController?reqMapId=11">Literature</a><br>
 	<a href="RegisterController?reqMapId=12">Fine Arts/Philosophy/Religion</a><br>
@@ -51,7 +50,6 @@
 	<a href="RegisterController?reqMapId=15">Biological Sciences</a><br>
 	<a href="RegisterController?reqMapId=16">Physical Sciences</a><br>
 	<a href="RegisterController?reqMapId=17">Multi-cultural Requirement</a><br>
-	<h4>Major Requirements</h4>
 	<a href="RegisterController?reqMapId=18">Core CurriculumVI: Major related courses</a><br>
 	<a href="RegisterController?reqMapId=19">Computer Science Major Courses</a><br>
 	
@@ -63,8 +61,9 @@
 					<tr>
 						<td>${pendingList.coursePrefix}${pendingList.courseNumber}</td>
 						<td>
-								<form name="gtfoClass" action="RegisterController?section=${pendingList.callNumber}" method="post">
-									<input type="submit" value="X">
+								<form name="gtfoClass" action="RegisterController" method="post">
+									<input name="section" type="hidden" value="${pendingList.callNumber}"/>
+									<input type="submit" value="X"/>
 								</form>
 							</td>
 					</tr>
@@ -99,7 +98,8 @@
 					<c:forEach var="sectionList" items="${courseListing.classSectionList}">
 						<tr>
 							<td><a href="RegisterController?coursePrefix=${courseListing.coursePrefix}&courseNumber=${courseListing.courseNumber}
-							&callNumber=${sectionList.callNumber}">${sectionList.callNumber}</a></td>
+								&callNumber=${sectionList.callNumber}">${sectionList.callNumber}</a></td>
+							<td colSpan="5">${courseListing.courseTitle}</td>	
 							<c:forEach var="courseMeetInfo" items="${sectionList.classMeetingsList}">
 								<tr>
 								<td></td>
@@ -116,6 +116,7 @@
 				</c:when>
 				<c:when test="${not empty reqMapId && empty courseListing}">
 					<c:set var="count" value="0"/>
+					<h2>${reqCatName}</h2>
 					<table>
 						<c:forEach var="mapReq" items="${reqMap}" step="3">
 							<tr>
