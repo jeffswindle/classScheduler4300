@@ -118,7 +118,7 @@ public class CourseDAO {
 				//creates and adds a requirement object to the list from
 				//the record
 				String reqCoursePrefix = rs.getString("coursePrefix");
-				String reqCourseNumber = rs.getString("courseNumber");
+				String reqCourseNumber = rs.getString("courseNumber").trim();
 				String reqCourseTitle = rs.getString("courseTitle");
 				list.add(new Requirement(reqMapId, reqCoursePrefix, reqCourseNumber, reqCourseTitle));
 			}
@@ -147,7 +147,7 @@ public class CourseDAO {
 				//packs the record into a ClassObj object and adds to arraylist
 				int callNumber = rs.getInt("callNumber");
 				coursePrefix = rs.getString("coursePrefix");
-				courseNumber = rs.getString("courseNumber");
+				courseNumber = rs.getString("courseNumber").trim();
 				courseTitle = rs.getString("courseTitle");
 				String days = rs.getString("days");
 				String periodBegin = rs.getString("periodBegin");
